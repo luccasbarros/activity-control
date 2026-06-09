@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import { loginAction } from "./actions";
 import { getCurrentUser } from "@/lib/auth";
+import { UI_COPY } from "@/lib/copy";
+import { PRODUCT_NAME } from "@/lib/product";
+import { ROUTES } from "@/lib/routes";
 
 type LoginPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -14,7 +17,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const currentUser = await getCurrentUser();
 
   if (currentUser) {
-    redirect("/");
+    redirect(ROUTES.dashboard);
   }
 
   const params = (await searchParams) ?? {};
@@ -24,18 +27,20 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     <main className="mx-auto grid min-h-screen max-w-md place-items-center px-5 py-10">
       <section className="panel w-full">
         <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate">
-          Activity Control
+          {PRODUCT_NAME}
         </p>
-        <h1 className="mt-3 text-3xl font-semibold text-ink">Sign in</h1>
+        <h1 className="mt-3 text-3xl font-semibold text-ink">
+          {UI_COPY.login.signIn}
+        </h1>
         <p className="mt-3 text-sm leading-6 text-slate">
-          Use the seeded local account to review the authenticated dashboard.
+          {UI_COPY.login.description}
         </p>
 
         {error ? <p className="alert mt-5">{error}</p> : null}
 
         <form action={loginAction} className="mt-6 grid gap-4">
           <label className="grid gap-2 text-sm font-medium text-ink">
-            <span>Email</span>
+            <span>{UI_COPY.fields.email}</span>
             <input
               className="field"
               name="email"
@@ -47,7 +52,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </label>
 
           <label className="grid gap-2 text-sm font-medium text-ink">
-            <span>Password</span>
+            <span>{UI_COPY.fields.password}</span>
             <input
               className="field"
               name="password"
@@ -59,7 +64,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </label>
 
           <button className="primary-button w-full" type="submit">
-            Sign in
+            {UI_COPY.login.signIn}
           </button>
         </form>
       </section>

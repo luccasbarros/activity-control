@@ -10,7 +10,7 @@ Supporting skills were used for focused activities:
 - `build-web-apps:frontend-testing-debugging` for responsive browser validation.
 - `superpowers:verification-before-completion` for final evidence before completion claims.
 
-The skill workflow helped transform the challenge prompt into a committed specification, implementation plan, Prisma model, validation tests, CRUD UI, local auth boundary, activity history, section navigation, responsive browser checks, Docker support, and documentation.
+The skill workflow helped transform the challenge prompt into a committed specification, implementation plan, Prisma model, validation tests, CRUD UI, local auth boundary, activity history, route-based app shell, dashboard charts, responsive browser checks, Docker support, CI, local observability, and documentation.
 
 ## Skill-Guided Activities
 
@@ -24,11 +24,13 @@ The skill workflow helped transform the challenge prompt into a committed specif
 | Feedback design | `superpowers:test-driven-development` | `src/lib/notifications.ts`, `src/components/toast.tsx` |
 | Auth helper design | `superpowers:test-driven-development` | `src/lib/password.ts`, `src/lib/session.ts`, related tests |
 | Activity history design | `superpowers:test-driven-development` | `src/lib/activity-change.ts`, `src/components/change-history.tsx` |
-| Responsive frontend validation | `build-web-apps:frontend-testing-debugging` | `src/components/section-navigation.tsx`, `playwright.config.ts`, `tests/e2e/responsive.spec.ts` |
-| UI generation | React/Next.js component assistance | `src/components/*`, `src/app/page.tsx` |
+| Responsive frontend validation | `build-web-apps:frontend-testing-debugging` | `docs/design/*`, `src/components/app-shell.tsx`, `src/components/app-navigation.tsx`, `playwright.config.ts`, `tests/e2e/responsive.spec.ts` |
+| UI generation | React/Next.js component assistance | `src/components/*`, `src/app/(app)/*` |
 | Docker runtime | implementation planning assistance | `Dockerfile`, `.dockerignore`, `docker-compose.yml` |
-| Documentation | documentation assistance | `README.md`, `docs/architecture.md`, `docs/ai-skill-usage.md` |
-| Verification discipline | `superpowers:verification-before-completion` | repeated `npm test`, `npm run lint`, `npm run build`, Prisma commands |
+| CI and versioning | implementation planning assistance | `.github/workflows/ci.yml`, `package.json` version scripts |
+| Local observability | implementation planning assistance | `src/lib/logger.ts`, structured log event constants |
+| Documentation | documentation assistance | `README.md`, `docs/architecture.md`, `docs/ai-skill-usage.md`, `docs/design/*` |
+| Verification discipline | `superpowers:verification-before-completion` | repeated `npm test`, `npm run lint`, `npm run build`, Prisma commands, Playwright checks |
 
 ## Human Review Boundaries
 
@@ -44,6 +46,9 @@ Human-owned decisions:
 - Add local authentication as a small access boundary instead of a full identity platform.
 - Add lightweight activity history instead of a full event-sourcing or audit-log system.
 - Add Docker as an optional runtime while keeping source execution as the primary path.
+- Use route-based navigation, a desktop sidebar, and mobile bottom navigation after reviewing the first mobile menu.
+- Use CSS dashboard charts instead of adding a charting dependency.
+- Use structured local logs instead of adding an external monitoring service.
 - Add browser-level responsive checks because this is a frontend evaluation, while keeping them focused on high-value flows.
 - Keep commits small and descriptive.
 
@@ -54,8 +59,10 @@ Human-owned decisions:
 - `docs/superpowers/plans/2026-06-09-product-maturity.md` records the later product-maturity enhancements and completion checks.
 - Tests were written for validation and filters before the helper implementation.
 - Additional tests cover password hashing, session token verification, pagination, navigation helpers, notifications, and activity change summaries.
-- Playwright e2e coverage checks login, dashboard section navigation, inline editing, pagination, toast feedback, and horizontal overflow across desktop, tablet, and mobile widths.
+- Playwright e2e coverage checks login, route navigation, edit modal, pagination, toast feedback, and horizontal overflow across desktop, tablet, and mobile widths.
 - `docs/agent-submission.md` records continuation state so project memory does not depend only on chat context.
+- `docs/design/reference.md`, `docs/design/ui-decisions.md`, and `docs/design/responsive-checklist.md` record the UI direction and responsive acceptance checks.
+- `.github/workflows/ci.yml` records the repeatable repository verification flow.
 - Commit history shows the progression from specification to implementation.
 - The implementation plan now marks completed tasks with checked boxes, making the spec-to-code progression easier to audit.
 
@@ -67,11 +74,15 @@ During development, these commands were run repeatedly:
 npx prisma generate
 npx prisma migrate status
 npm run seed
+npm audit --omit=dev
+npx tsc --noEmit
 npm test
 npx playwright install chromium
 npm run test:e2e
 npm run lint
 npm run build
+docker compose config
+docker compose build
 ```
 
 The final verification commands are documented in the final submission and should be re-run before submission.

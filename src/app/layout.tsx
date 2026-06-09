@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { PRODUCT_DESCRIPTION, PRODUCT_NAME } from "@/lib/product";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Activity Control",
-  description: "Local activity control system built with Next.js, Prisma, and SQLite.",
+  title: PRODUCT_NAME,
+  description: PRODUCT_DESCRIPTION,
 };
 
 export default function RootLayout({
@@ -12,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html data-scroll-behavior="smooth" lang="en" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { UI_COPY } from "@/lib/copy";
 import { categoryOptions, priorityOptions } from "@/lib/options";
 import { type ActivityFilters, hasActiveFilters } from "@/lib/filters";
 import { DEFAULT_PAGE_SIZE } from "@/lib/pagination";
+import { ROUTES } from "@/lib/routes";
 
 type FilterBarProps = {
   filters: ActivityFilters;
@@ -14,9 +16,9 @@ export function FilterBar({ filters, pageSize }: FilterBarProps) {
       <input name="pageSize" type="hidden" value={pageSize} />
 
       <label className="grid gap-2 text-sm font-medium text-ink">
-        <span>Priority</span>
+        <span>{UI_COPY.fields.priority}</span>
         <select name="priority" defaultValue={filters.priority ?? ""} className="field">
-          <option value="">All priorities</option>
+          <option value="">{UI_COPY.filters.allPriorities}</option>
           {priorityOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -26,9 +28,9 @@ export function FilterBar({ filters, pageSize }: FilterBarProps) {
       </label>
 
       <label className="grid gap-2 text-sm font-medium text-ink">
-        <span>Category</span>
+        <span>{UI_COPY.fields.category}</span>
         <select name="category" defaultValue={filters.category ?? ""} className="field">
-          <option value="">All categories</option>
+          <option value="">{UI_COPY.filters.allCategories}</option>
           {categoryOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -38,35 +40,39 @@ export function FilterBar({ filters, pageSize }: FilterBarProps) {
       </label>
 
       <label className="grid gap-2 text-sm font-medium text-ink">
-        <span>Team</span>
+        <span>{UI_COPY.fields.team}</span>
         <input
           name="team"
           defaultValue={filters.team ?? ""}
           className="field"
-          placeholder="Platform"
+          placeholder={UI_COPY.filters.teamPlaceholder}
         />
       </label>
 
       <label className="grid gap-2 text-sm font-medium text-ink">
-        <span>Assignee</span>
+        <span>{UI_COPY.fields.assignee}</span>
         <input
           name="assignee"
           defaultValue={filters.assignee ?? ""}
           className="field"
-          placeholder="Alex"
+          placeholder={UI_COPY.filters.assigneePlaceholder}
         />
       </label>
 
       <div className="flex items-end gap-2">
         <button type="submit" className="secondary-button">
-          Apply
+          {UI_COPY.actions.apply}
         </button>
         {hasActiveFilters(filters) ? (
           <Link
-            href={pageSize === DEFAULT_PAGE_SIZE ? "/" : `/?pageSize=${pageSize}`}
+            href={
+              pageSize === DEFAULT_PAGE_SIZE
+                ? ROUTES.activities
+                : `${ROUTES.activities}?pageSize=${pageSize}`
+            }
             className="ghost-button"
           >
-            Clear
+            {UI_COPY.actions.clear}
           </Link>
         ) : null}
       </div>

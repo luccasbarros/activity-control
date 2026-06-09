@@ -5,10 +5,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#172033",
-        slate: "#5d6679",
-        paper: "#f7f8fb",
-        line: "#d9deea",
+        ink: "var(--color-ink)",
+        slate: "var(--color-slate)",
+        paper: "var(--color-paper)",
+        line: "var(--color-line)",
       },
     },
   },

@@ -1,4 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
+import { UI_COPY } from "../../src/lib/copy";
+import { THEME_STORAGE_KEY } from "../../src/lib/constants";
 
 const viewports = [
   { name: "desktop", width: 1440, height: 900 },
@@ -9,9 +11,7 @@ const viewports = [
 async function signIn(page: Page) {
   await page.goto("/login");
   await page.getByRole("button", { name: "Sign in" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Internal activity control" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
@@ -69,27 +69,32 @@ test.describe("responsive activity control experience", () => {
       await expectNoHorizontalOverflow(page);
     });
 
-    test(`dashboard fits ${viewport.name}`, async ({ page }) => {
+    test(`dashboard route fits ${viewport.name}`, async ({ page }) => {
       await page.setViewportSize(viewport);
       await signIn(page);
 
-      await expect(page.getByText("Signed in")).toBeVisible();
-      const sectionNav = page.getByRole("navigation", {
-        name: "Dashboard sections",
-      });
-      await expect(sectionNav).toBeVisible();
-      await expect(
-        sectionNav.getByRole("link", { name: "Overview" }),
-      ).toHaveAttribute("href", "#overview");
+      await expect(page.getByRole("navigation", { name: "Primary navigation" }).or(
+        page.getByRole("navigation", { name: "Mobile navigation" }),
+      )).toBeVisible();
       await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Recent changes" })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Create activity" })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Activity list" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Status distribution" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Operational alerts" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "History" })).toBeVisible();
+
+      await expectNoHorizontalOverflow(page);
+    });
+
+    test(`activities route fits ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize(viewport);
+      await signIn(page);
+      await page.goto("/activities");
+
+      await expect(page.getByRole("heading", { name: "Activities" })).toBeVisible();
       await expect(page.getByRole("button", { name: "Apply" })).toBeVisible();
-      await expect(page.getByRole("button", { name: "Create activity" })).toBeVisible();
+      await expect(page.getByRole("link", { name: "New activity" })).toBeVisible();
       await expect(page.getByRole("navigation", { name: "Activity pagination" })).toBeVisible();
 
-      await page.locator("summary", { hasText: "Edit activity" }).first().click();
+      await page.getByRole("button", { name: "Edit" }).first().click();
       await expect(page.getByRole("button", { name: "Save changes" }).first()).toBeVisible();
 
       await expectNoHorizontalOverflow(page);
@@ -99,6 +104,7 @@ test.describe("responsive activity control experience", () => {
   test("pagination and toast remain usable on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await signIn(page);
+    await page.goto("/activities");
 
     await expect(page.getByText(/^Page 1 of \d+$/)).toBeVisible();
     await page.getByRole("link", { name: "Next" }).click();
@@ -106,28 +112,68 @@ test.describe("responsive activity control experience", () => {
     await expect(page.getByText(/^Page 2 of \d+$/)).toBeVisible();
     await expectNoHorizontalOverflow(page);
 
-    await page.goto("/?notice=activity-created");
+    await page.goto("/activities?notice=activity-created");
     await expect(page.getByRole("status")).toContainText("Activity created");
     await expect(page.getByRole("button", { name: "Dismiss notification" })).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
 
-  test("section navigation works on mobile", async ({ page }) => {
+  test("mobile bottom navigation moves between routes", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await signIn(page);
 
-    const sectionNav = page.getByRole("navigation", {
-      name: "Dashboard sections",
+    const mobileNav = page.getByRole("navigation", {
+      name: "Mobile navigation",
     });
 
-    await sectionNav.getByRole("link", { name: "Activity list" }).click();
-    await expect(page).toHaveURL(/#activity-list$/);
-    await expect(page.getByRole("heading", { name: "Activity list" })).toBeVisible();
+    await mobileNav.getByRole("link", { name: "Activities" }).click();
+    await expect(page).toHaveURL(/\/activities$/);
+    await expect(page.getByRole("heading", { name: "Activities" })).toBeVisible();
     await expectNoHorizontalOverflow(page);
 
-    await sectionNav.getByRole("link", { name: "Create activity" }).click();
-    await expect(page).toHaveURL(/#create-activity$/);
-    await expect(page.getByRole("heading", { name: "Create activity" })).toBeVisible();
+    await mobileNav.getByRole("link", { name: "New" }).click();
+    await expect(page).toHaveURL(/\/activities\/new$/);
+    await expect(page.getByRole("heading", { name: "New activity" })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+
+    await mobileNav.getByRole("link", { name: "History" }).click();
+    await expect(page).toHaveURL(/\/history$/);
+    await expect(
+      page.getByRole("heading", { level: 1, name: "History" }),
+    ).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test("theme toggle applies and persists the selected theme", async ({
+    page,
+  }) => {
+    await page.addInitScript((storageKey) => {
+      if (!window.localStorage.getItem(storageKey)) {
+        window.localStorage.setItem(storageKey, "light");
+      }
+    }, THEME_STORAGE_KEY);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await signIn(page);
+
+    const documentRoot = page.locator("html");
+
+    await expect(documentRoot).toHaveAttribute("data-theme", "light");
+    await page
+      .getByRole("button", { name: UI_COPY.theme.switchToDark })
+      .click();
+    await expect(documentRoot).toHaveAttribute("data-theme", "dark");
+    await expect
+      .poll(() =>
+        page.evaluate(
+          (storageKey) => window.localStorage.getItem(storageKey),
+          THEME_STORAGE_KEY,
+        ),
+      )
+      .toBe("dark");
+
+    await page.reload();
+    await expect(documentRoot).toHaveAttribute("data-theme", "dark");
     await expectNoHorizontalOverflow(page);
   });
 });

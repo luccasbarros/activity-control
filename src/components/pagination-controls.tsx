@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { UI_COPY } from "@/lib/copy";
 import { type ActivityFilters } from "@/lib/filters";
 import { buildActivityListPath } from "@/lib/navigation";
 import {
@@ -23,12 +24,13 @@ export function PaginationControls({
 
   return (
     <nav
-      aria-label="Activity pagination"
+      aria-label={UI_COPY.pagination.ariaLabel}
       className="panel flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
     >
       <p className="text-sm font-medium text-slate">
-        Showing {pagination.itemStart}-{pagination.itemEnd} of{" "}
-        {pagination.totalItems} activities
+        {UI_COPY.pagination.showingLabel} {pagination.itemStart}-
+        {pagination.itemEnd} {UI_COPY.pagination.pageOfLabel}{" "}
+        {pagination.totalItems} {UI_COPY.pagination.activitiesLabel}
       </p>
 
       <div className="flex flex-wrap items-center gap-3">
@@ -44,7 +46,7 @@ export function PaginationControls({
             <input type="hidden" name="assignee" value={filters.assignee} />
           ) : null}
           <label className="text-sm font-medium text-ink" htmlFor="pageSize">
-            Page size
+            {UI_COPY.fields.pageSize}
           </label>
           <select
             className="field min-h-10 w-24"
@@ -59,7 +61,7 @@ export function PaginationControls({
             ))}
           </select>
           <button className="ghost-button" type="submit">
-            Set
+            {UI_COPY.actions.set}
           </button>
         </form>
 
@@ -71,14 +73,15 @@ export function PaginationControls({
                 page: String(pagination.currentPage - 1),
               })}
             >
-              Previous
+              {UI_COPY.pagination.previous}
             </Link>
           ) : (
-            <span className="disabled-button">Previous</span>
+            <span className="disabled-button">{UI_COPY.pagination.previous}</span>
           )}
 
           <span className="pill">
-            Page {pagination.currentPage} of {pagination.totalPages}
+            {UI_COPY.pagination.pageLabel} {pagination.currentPage}{" "}
+            {UI_COPY.pagination.pageOfLabel} {pagination.totalPages}
           </span>
 
           {pagination.hasNextPage ? (
@@ -88,10 +91,10 @@ export function PaginationControls({
                 page: String(pagination.currentPage + 1),
               })}
             >
-              Next
+              {UI_COPY.pagination.next}
             </Link>
           ) : (
-            <span className="disabled-button">Next</span>
+            <span className="disabled-button">{UI_COPY.pagination.next}</span>
           )}
         </div>
 
@@ -100,7 +103,7 @@ export function PaginationControls({
             className="ghost-button"
             href={buildActivityListPath(filters, { page: "1" })}
           >
-            Reset size
+            {UI_COPY.pagination.resetSize}
           </Link>
         ) : null}
       </div>

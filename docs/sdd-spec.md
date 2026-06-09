@@ -74,15 +74,17 @@ The list and edit surfaces must show:
 
 The project must include representative seed data so the app can run locally with realistic content immediately.
 
-### FR9. Dashboard Metrics
+### FR9. Dashboard Metrics And Monitoring
 
-The first screen should include lightweight metrics:
+The dashboard route should include operational metrics:
 
 - total activities
 - pending activities
 - in-progress activities
 - blocked activities
 - completed activities
+
+It should also show simple distribution charts and alerts for blocked or critical work.
 
 ### FR10. Paginated Activity List
 
@@ -99,16 +101,20 @@ The interface must show user feedback after create, update, delete, and validati
 
 Destructive delete actions must require explicit confirmation before submission.
 
-### FR12. Dashboard Section Navigation
+### FR12. Workspace Navigation
 
-The dashboard must provide direct navigation to the main sections:
+The authenticated app must provide route-based navigation for the main work areas:
 
-- Overview
-- Recent changes
-- Create activity
-- Activity list
+- Dashboard: `/dashboard`
+- Activities: `/activities`
+- New activity: `/activities/new`
+- History: `/history`
 
-The navigation must remain usable on narrow mobile screens without horizontal page overflow.
+Desktop should use a persistent sidebar and top account area. Mobile should use a bottom navigation bar with reachable account/logout controls in the top bar.
+
+### FR13. Theme And Local Observability
+
+The interface should support light and dark themes. Server-side auth and activity mutations should emit structured logs so local reviewers can inspect important actions while running the app.
 
 ## 4. Non-Functional Requirements
 
@@ -122,6 +128,8 @@ The navigation must remain usable on narrow mobile screens without horizontal pa
 - The interface is responsive across desktop, tablet, and mobile widths without horizontal overflow in the main flows.
 - Validation must prevent empty required fields and invalid enum values.
 - The app should favor clear component boundaries over premature abstraction.
+- CI should run typecheck, unit tests, lint, build, migrations, seed, and Playwright checks.
+- Local observability should use structured logs and visible activity history instead of external monitoring services.
 - Documentation must explain AI/Skill usage, impact, and human review.
 
 ## 5. Data Model
@@ -181,26 +189,27 @@ ASCII labels are used in source code and database values for portability. User-f
 
 ### Flow A: Create Activity
 
-1. User opens the page.
+1. User opens `/activities/new`.
 2. User fills the activity form.
 3. User submits.
 4. System validates fields.
-5. If valid, system saves the activity and refreshes the list.
+5. If valid, system saves the activity and returns the user to the activity list with a confirmation toast.
 6. If invalid, system returns field-level messages.
 
 ### Flow B: Edit Activity
 
 1. User clicks edit on a listed activity.
-2. The form is populated with the current data.
+2. The edit modal opens with the current data.
 3. User changes fields and saves.
 4. System validates and persists the update.
-5. List reflects the new values and updated timestamp.
+5. The modal closes, the list reflects the new values, and a confirmation toast is shown.
 
 ### Flow C: Delete Activity
 
 1. User clicks delete on a listed activity.
-2. System deletes the activity.
-3. Metrics and list refresh.
+2. Browser confirmation asks for explicit destructive-action consent.
+3. System deletes the activity.
+4. Metrics and list refresh.
 
 ### Flow D: Filter Activities
 
@@ -208,6 +217,12 @@ ASCII labels are used in source code and database values for portability. User-f
 2. URL query parameters represent the active filter state.
 3. Server-side query returns only matching activities.
 4. User can clear filters and return to the full list.
+
+### Flow E: Review Dashboard And History
+
+1. User opens `/dashboard`.
+2. System renders metrics, distribution charts, blocked/critical alerts, and recent changes.
+3. User opens `/history` for a longer chronological activity-change view.
 
 ## 7. Acceptance Criteria
 
@@ -219,10 +234,13 @@ ASCII labels are used in source code and database values for portability. User-f
 - A user can move between paginated activity pages without losing filters.
 - A user receives confirmation feedback after successful create, update, and delete actions.
 - A user must explicitly confirm delete before the destructive action is submitted.
-- A user can navigate directly to each major dashboard section.
-- Login, dashboard, inline editing, pagination, and toast feedback remain usable on desktop, tablet, and mobile widths.
+- A user can navigate directly to dashboard, activities, new activity, and history routes.
+- Login, dashboard, edit modal, pagination, mobile navigation, and toast feedback remain usable on desktop, tablet, and mobile widths.
+- The dashboard shows charts and alerts for status, priority, category, team, blocked work, and critical work.
+- Auth and activity mutations emit structured local logs.
 - Invalid form submissions are rejected with actionable messages.
 - Prisma schema and migration are committed.
+- GitHub Actions CI is committed for repository-level verification.
 - README documents setup, architecture, AI/Skill usage, and validation.
 - `docs/ai-skill-usage.md` records evidence of assisted work.
 - A architecture note explains why key decisions were made.
@@ -241,6 +259,7 @@ ASCII labels are used in source code and database values for portability. User-f
 - Use automated tests for validation, filtering helpers, pagination helpers, notifications, session helpers, and responsive browser behavior.
 - Use manual browser checks for full mutating flows such as create, edit, delete, and filter interactions.
 - Use `npm run lint`, `npm test`, `npm run test:e2e`, and `npm run build` before final submission.
+- Use GitHub Actions as the repeatable CI entrypoint for push and pull-request validation.
 
 ## 10. Product-Maturity Enhancements
 
@@ -295,18 +314,41 @@ The repository should include a concise architecture document explaining:
 - testing and verification strategy;
 - trade-offs and future paths.
 
+### E5. App Shell, Dashboard Charts, And Theme
+
+The app should use a workspace shell instead of a single long page:
+
+- authenticated route group;
+- desktop sidebar;
+- top user/account controls;
+- mobile bottom navigation;
+- dedicated routes for dashboard, activity list, create, and history;
+- light/dark theme toggle;
+- simple CSS-based dashboard charts.
+
+This keeps the UX closer to a real internal tool without adding a heavy design system dependency.
+
+### E6. CI And Local Observability
+
+The repository should include GitHub Actions CI and structured local logs.
+
+CI should verify migrations, seed data, TypeScript, unit tests, lint, production build, and Playwright. Logs should stay lightweight and local, using structured JSON records for auth and activity actions.
+
 ## 11. Scope Decisions
 
 ### Included
 
-- Single-page local application.
+- Route-based local application.
 - Server Actions for create, update, and delete.
 - SQLite with Prisma.
 - Seed data.
-- Dashboard metrics.
+- Dashboard metrics, charts, and operational alerts.
 - Automated tests around validation, filtering, pagination, notifications, auth/session helpers, change summaries, and responsive browser behavior.
 - Local authentication gate.
 - Lightweight activity change history.
+- Structured local logs.
+- Light/dark theme.
+- GitHub Actions CI.
 - Optional Docker support.
 - Architecture documentation.
 
@@ -315,6 +357,8 @@ The repository should include a concise architecture document explaining:
 - Multi-user permissions: not required by the challenge.
 - Full production identity provider: the local demo auth can be replaced later.
 - Full audit/event-sourcing model: the lightweight change history is enough for this challenge.
+- External observability platform: local structured logs and visible history are enough for this repository.
+- Heavy charting library: CSS bars are enough for the dashboard distributions.
 - External deployment: the expected delivery is local execution from source.
 
 ## 12. SDT Traceability
@@ -327,13 +371,16 @@ The repository should include a concise architecture document explaining:
 | Filtering | `src/lib/filters.ts`, URL query params |
 | Pagination | `src/lib/pagination.ts`, `src/components/pagination-controls.tsx` |
 | CRUD | `src/app/actions.ts` |
-| UI flows | `src/app/page.tsx`, `src/components/*` |
+| App shell and routes | `src/app/(app)/layout.tsx`, `src/components/app-shell.tsx`, `src/components/app-navigation.tsx` |
+| UI flows | `src/app/(app)/dashboard/page.tsx`, `src/app/(app)/activities/page.tsx`, `src/app/(app)/activities/new/page.tsx`, `src/app/(app)/history/page.tsx`, `src/components/*` |
 | Feedback | `src/lib/notifications.ts`, `src/components/toast.tsx` |
-| Section navigation | `src/components/section-navigation.tsx`, section anchors in `src/app/page.tsx` |
 | Responsive browser checks | `playwright.config.ts`, `tests/e2e/responsive.spec.ts` |
-| Metrics | `src/lib/metrics.ts`, dashboard cards |
+| Metrics, charts, and alerts | `src/lib/metrics.ts`, `src/components/metric-cards.tsx`, `src/components/dashboard-panels.tsx` |
 | Authentication | `src/lib/password.ts`, `src/lib/session.ts`, `src/lib/auth.ts`, `src/app/login/*` |
 | Change history | `prisma/schema.prisma`, `src/lib/activity-change.ts`, `src/components/change-history.tsx` |
+| Structured logs | `src/lib/logger.ts`, `src/lib/constants.ts` |
+| Theme | `src/components/theme-toggle.tsx`, `src/app/globals.css` |
+| CI | `.github/workflows/ci.yml` |
 | Docker | `Dockerfile`, `.dockerignore`, `docker-compose.yml` |
 | Architecture documentation | `docs/architecture.md` |
 | AI evidence | `docs/ai-skill-usage.md` |

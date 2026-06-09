@@ -32,9 +32,12 @@ npx playwright install chromium
 npm run test:e2e
 npm run lint
 npm run build
+npm run version:patch
 ```
 
 Run `npx playwright install chromium` once before `npm run test:e2e` when the local machine does not already have the Playwright browser installed.
+
+`npm run test:e2e` clears `.next` before starting Playwright so development and production build artifacts do not conflict.
 
 `npx prisma migrate dev` also runs the seed command through `prisma.config.ts`.
 
@@ -55,19 +58,24 @@ For local HTTP access, `docker-compose.yml` sets `AUTH_COOKIE_SECURE=false`. A r
 - Local sign-in with a seeded demo user
 - Create activities
 - List activities with server-side pagination
-- Edit activities inline
+- Edit activities in a modal without losing list context
 - Delete activities
 - Filter by priority, category, team, and assignee
 - Manage status: Pending, In progress, Done, Blocked
 - Show created and updated timestamps
 - Record recent create, update, and delete changes
-- Navigate directly between dashboard sections
+- Route-based workspace navigation: dashboard, activities, new activity, and history
+- Desktop sidebar, top account menu, and mobile bottom navigation
+- Light/dark theme toggle
 - Show confirmation toasts after create, update, delete, and validation errors
 - Confirm destructive delete actions before submitting
 - Seed representative local data
-- Dashboard metrics for total, pending, in-progress, blocked, and done activities
+- Dashboard metrics, distribution charts, and alerts for blocked or critical work
+- Structured server logs for auth and activity mutations
+- Product version surfaced in the application shell
 - Automated tests for validation, filters, pagination, navigation helpers, notifications, password hashing, session tokens, and change summaries
-- Browser-level responsive checks with Playwright for login, dashboard navigation, inline editing, pagination, and toasts
+- Browser-level responsive checks with Playwright for login, dashboard navigation, edit modal, pagination, and toasts
+- GitHub Actions CI for typecheck, tests, lint, build, migrations, seed, and Playwright
 - Optional Docker runtime
 
 ## Specification-Driven Artifacts
@@ -92,14 +100,19 @@ The app uses the Next.js App Router with server-side data loading and Server Act
 - `src/lib/navigation.ts`: safe return paths and query-message helpers.
 - `src/lib/notifications.ts`: toast message mapping.
 - `src/lib/metrics.ts`: dashboard metric calculation.
-- `src/components/section-navigation.tsx`: in-page navigation between dashboard sections.
+- `src/lib/logger.ts`: structured server logs for local observability.
 - `src/lib/password.ts`: PBKDF2 password hashing for the seeded local account.
 - `src/lib/session.ts`: signed session-token helper.
 - `src/lib/auth.ts`: current-user lookup, session cookie, and route protection.
 - `src/app/actions.ts`: create, update, and delete Server Actions.
 - `src/app/login/*`: local login/logout flow.
-- `src/app/page.tsx`: server-rendered dashboard, filters, form, and list composition.
+- `src/app/(app)/layout.tsx`: authenticated application shell.
+- `src/app/(app)/dashboard/page.tsx`: metrics, charts, alerts, and recent changes.
+- `src/app/(app)/activities/page.tsx`: filters, paginated cards, edit modal, and delete flow.
+- `src/app/(app)/activities/new/page.tsx`: dedicated create flow.
+- `src/app/(app)/history/page.tsx`: operational change history.
 - `src/components/*`: focused UI components.
+- `.github/workflows/ci.yml`: repository verification workflow.
 
 See `docs/architecture.md` for the request flow, boundaries, trade-offs, and future paths.
 
@@ -137,7 +150,8 @@ Runtime smoke check:
 - `/login` returns 200 and displays the seeded demo account.
 - authenticated list pages render pagination state;
 - confirmation toasts render from action query messages.
-- Playwright responsive checks passed on desktop, tablet, and mobile viewports with no horizontal overflow, including section navigation on mobile.
+- Playwright responsive checks passed on desktop, tablet, and mobile viewports with no horizontal overflow across dashboard, activities, create, and history routes.
+- Visual screenshots were reviewed for desktop and mobile shell behavior, including sidebar, top account menu, mobile bottom navigation, dashboard charts, and activity cards.
 
 ## AI / Skill Usage
 
@@ -151,9 +165,9 @@ The skill-assisted workflow supported:
 - planning the implementation in small commits;
 - generating the first version of React components and Prisma schema;
 - creating validation, filter, session, password, and change-summary tests;
-- adding Playwright responsive smoke coverage for the main frontend flows and dashboard section navigation;
+- adding Playwright responsive smoke coverage for the main frontend routes and edit modal;
 - adding a small authentication boundary and change-history model;
-- reviewing documentation, Docker support, and trade-offs.
+- reviewing documentation, Docker support, CI, local observability, and trade-offs.
 
 Human decisions constrained scope, reviewed the generated code, kept the UI in English, chose local-first SQLite setup, and ran verification commands. See `docs/ai-skill-usage.md` for evidence.
 

@@ -5,8 +5,18 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { summarizeActivityUpdate } from "@/lib/activity-change";
 import { requireCurrentUser } from "@/lib/auth";
+import {
+  ACTIVITY_CHANGE_SUMMARIES,
+  FORM_FIELDS,
+  LOG_EVENTS,
+  NOTICE_CODES,
+  QUERY_PARAMS,
+} from "@/lib/constants";
+import { VALIDATION_MESSAGES } from "@/lib/copy";
 import { prisma } from "@/lib/db";
+import { logServerEvent } from "@/lib/logger";
 import { sanitizeReturnTo, withQueryMessage } from "@/lib/navigation";
+import { ROUTES } from "@/lib/routes";
 import { type ActivityFormInput, parseActivityFormData } from "@/lib/validation";
 
 function firstValidationError(
@@ -17,11 +27,11 @@ function firstValidationError(
 }
 
 function redirectWithError(returnTo: string, message: string): never {
-  redirect(withQueryMessage(returnTo, { key: "error", value: message }));
+  redirect(withQueryMessage(returnTo, { key: QUERY_PARAMS.error, value: message }));
 }
 
 function redirectWithNotice(returnTo: string, notice: string): never {
-  redirect(withQueryMessage(returnTo, { key: "notice", value: notice }));
+  redirect(withQueryMessage(returnTo, { key: QUERY_PARAMS.notice, value: notice }));
 }
 
 function toActivityFormInput(activity: Activity): ActivityFormInput {
@@ -36,19 +46,25 @@ function toActivityFormInput(activity: Activity): ActivityFormInput {
   };
 }
 
+function revalidateActivityViews() {
+  revalidatePath(ROUTES.dashboard);
+  revalidatePath(ROUTES.activities);
+  revalidatePath(ROUTES.history);
+}
+
 export async function createActivityAction(formData: FormData) {
   const user = await requireCurrentUser();
-  const returnTo = sanitizeReturnTo(formData.get("returnTo"));
+  const returnTo = sanitizeReturnTo(formData.get(FORM_FIELDS.returnTo));
   const parsed = parseActivityFormData(formData);
 
   if (!parsed.success) {
     redirectWithError(
       returnTo,
-      firstValidationError(parsed.errors, "Invalid activity."),
+      firstValidationError(parsed.errors, VALIDATION_MESSAGES.invalidActivity),
     );
   }
 
-  await prisma.$transaction(async (tx) => {
+  const createdActivity = await prisma.$transaction(async (tx) => {
     const activity = await tx.activity.create({
       data: parsed.data,
     });
@@ -58,37 +74,49 @@ export async function createActivityAction(formData: FormData) {
         activityId: activity.id,
         activityTitle: activity.title,
         type: ActivityChangeType.CREATED,
-        summary: "Created activity.",
+        summary: ACTIVITY_CHANGE_SUMMARIES.created,
         actorId: user.id,
         actorName: user.name,
       },
     });
+
+    return activity;
   });
 
-  revalidatePath("/");
-  redirectWithNotice(returnTo, "activity-created");
+  logServerEvent({
+    actorEmail: user.email,
+    actorId: user.id,
+    event: LOG_EVENTS.activityCreated,
+    metadata: {
+      activityId: createdActivity.id,
+      priority: createdActivity.priority,
+      status: createdActivity.status,
+    },
+  });
+  revalidateActivityViews();
+  redirectWithNotice(returnTo, NOTICE_CODES.activityCreated);
 }
 
 export async function updateActivityAction(id: string, formData: FormData) {
   const user = await requireCurrentUser();
-  const returnTo = sanitizeReturnTo(formData.get("returnTo"));
+  const returnTo = sanitizeReturnTo(formData.get(FORM_FIELDS.returnTo));
   const parsed = parseActivityFormData(formData);
 
   if (!parsed.success) {
     redirectWithError(
       returnTo,
-      firstValidationError(parsed.errors, "Invalid activity."),
+      firstValidationError(parsed.errors, VALIDATION_MESSAGES.invalidActivity),
     );
   }
 
   try {
-    await prisma.$transaction(async (tx) => {
+    const updatedActivity = await prisma.$transaction(async (tx) => {
       const before = await tx.activity.findUnique({
         where: { id },
       });
 
       if (!before) {
-        throw new Error("Activity not found.");
+        throw new Error(VALIDATION_MESSAGES.activityNotFound);
       }
 
       const activity = await tx.activity.update({
@@ -106,27 +134,46 @@ export async function updateActivityAction(id: string, formData: FormData) {
           actorName: user.name,
         },
       });
+
+      return activity;
+    });
+
+    logServerEvent({
+      actorEmail: user.email,
+      actorId: user.id,
+      event: LOG_EVENTS.activityUpdated,
+      metadata: {
+        activityId: updatedActivity.id,
+        priority: updatedActivity.priority,
+        status: updatedActivity.status,
+      },
     });
   } catch {
-    redirectWithError(returnTo, "Activity not found.");
+    logServerEvent({
+      actorEmail: user.email,
+      actorId: user.id,
+      event: LOG_EVENTS.activityUpdateFailed,
+      metadata: { activityId: id },
+    });
+    redirectWithError(returnTo, VALIDATION_MESSAGES.activityNotFound);
   }
 
-  revalidatePath("/");
-  redirectWithNotice(returnTo, "activity-updated");
+  revalidateActivityViews();
+  redirectWithNotice(returnTo, NOTICE_CODES.activityUpdated);
 }
 
 export async function deleteActivityAction(id: string, formData: FormData) {
   const user = await requireCurrentUser();
-  const returnTo = sanitizeReturnTo(formData.get("returnTo"));
+  const returnTo = sanitizeReturnTo(formData.get(FORM_FIELDS.returnTo));
 
   try {
-    await prisma.$transaction(async (tx) => {
+    const deletedActivity = await prisma.$transaction(async (tx) => {
       const activity = await tx.activity.findUnique({
         where: { id },
       });
 
       if (!activity) {
-        throw new Error("Activity not found.");
+        throw new Error(VALIDATION_MESSAGES.activityNotFound);
       }
 
       await tx.activity.delete({
@@ -138,16 +185,35 @@ export async function deleteActivityAction(id: string, formData: FormData) {
           activityId: null,
           activityTitle: activity.title,
           type: ActivityChangeType.DELETED,
-          summary: "Deleted activity.",
+          summary: ACTIVITY_CHANGE_SUMMARIES.deleted,
           actorId: user.id,
           actorName: user.name,
         },
       });
+
+      return activity;
+    });
+
+    logServerEvent({
+      actorEmail: user.email,
+      actorId: user.id,
+      event: LOG_EVENTS.activityDeleted,
+      metadata: {
+        activityId: deletedActivity.id,
+        priority: deletedActivity.priority,
+        status: deletedActivity.status,
+      },
     });
   } catch {
-    redirectWithError(returnTo, "Activity not found.");
+    logServerEvent({
+      actorEmail: user.email,
+      actorId: user.id,
+      event: LOG_EVENTS.activityDeleteFailed,
+      metadata: { activityId: id },
+    });
+    redirectWithError(returnTo, VALIDATION_MESSAGES.activityNotFound);
   }
 
-  revalidatePath("/");
-  redirectWithNotice(returnTo, "activity-deleted");
+  revalidateActivityViews();
+  redirectWithNotice(returnTo, NOTICE_CODES.activityDeleted);
 }

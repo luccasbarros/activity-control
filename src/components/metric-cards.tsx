@@ -1,4 +1,5 @@
 import { type ActivityMetrics } from "@/lib/metrics";
+import { UI_COPY } from "@/lib/copy";
 
 const metricsConfig = [
   { key: "total", label: "Total" },
@@ -17,10 +18,10 @@ export function MetricCards({ metrics }: { metrics: ActivityMetrics }) {
     >
       <div>
         <h2 className="text-2xl font-semibold text-ink" id="overview-heading">
-          Overview
+          {UI_COPY.overview.title}
         </h2>
         <p className="mt-2 text-sm leading-6 text-slate">
-          Current activity distribution by status.
+          {UI_COPY.overview.currentDistribution}
         </p>
       </div>
 

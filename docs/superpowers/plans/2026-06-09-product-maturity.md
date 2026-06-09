@@ -89,7 +89,7 @@
 - [x] Run `npm test`, `npm run lint`, `npm run build`, and Prisma migration checks.
 - [x] Commit as `docs: document architecture and verification`.
 
-### Task 6: Section Navigation And Responsive E2E
+### Task 6: Initial Section Navigation And Responsive E2E
 
 **Files:**
 - Create: `src/components/section-navigation.tsx`
@@ -107,3 +107,47 @@
 - [x] Add a responsive dashboard section menu.
 - [x] Validate the menu in mobile Playwright coverage.
 - [x] Confirm screenshots do not show horizontal overflow.
+
+**Result:** This was a valid incremental step, then superseded by Task 7 after mobile review showed the grid menu was not strong enough for the final UX.
+
+### Task 7: Route-Based App Shell, CI, And Local Observability
+
+**Files:**
+- Create: `docs/design/reference.md`
+- Create: `docs/design/ui-decisions.md`
+- Create: `docs/design/responsive-checklist.md`
+- Create: `src/app/(app)/layout.tsx`
+- Create: `src/app/(app)/dashboard/page.tsx`
+- Create: `src/app/(app)/activities/page.tsx`
+- Create: `src/app/(app)/activities/new/page.tsx`
+- Create: `src/app/(app)/history/page.tsx`
+- Create: `src/components/app-shell.tsx`
+- Create: `src/components/app-navigation.tsx`
+- Create: `src/components/dashboard-panels.tsx`
+- Create: `src/components/activity-edit-dialog.tsx`
+- Create: `src/components/theme-toggle.tsx`
+- Create: `src/lib/logger.ts`
+- Create: `.github/workflows/ci.yml`
+- Modify: `src/app/actions.ts`
+- Modify: `src/app/globals.css`
+- Modify: `src/lib/navigation.ts`
+- Modify: `tests/e2e/responsive.spec.ts`
+- Modify: `README.md`
+- Modify: `docs/sdd-spec.md`
+- Modify: `docs/architecture.md`
+- Modify: `docs/ai-skill-usage.md`
+- Modify: `docs/agent-submission.md`
+- Modify: `package.json`
+
+- [x] Record the UI reference direction and responsive checklist.
+- [x] Replace section anchors with route-based app navigation.
+- [x] Add desktop sidebar, mobile bottom navigation, top user menu, and product version.
+- [x] Add dedicated routes for dashboard, activities, new activity, and history.
+- [x] Move edit into a modal and keep create as a dedicated page.
+- [x] Add dashboard distribution charts and blocked/critical alerts.
+- [x] Add light/dark theme toggle.
+- [x] Add structured server logs for auth and activity mutations.
+- [x] Add GitHub Actions CI.
+- [x] Add package version bump scripts and surface the version in the UI.
+- [x] Run final typecheck, tests, lint, build, Playwright, Docker checks, and screenshot review.
+- [x] Commit as `feat: add route based activity workspace`.

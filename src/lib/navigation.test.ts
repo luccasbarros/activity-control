@@ -15,7 +15,9 @@ describe("navigation helpers", () => {
       notice: "activity-created",
     });
 
-    expect(path).toBe("/?priority=HIGH&team=Platform&page=2&pageSize=10");
+    expect(path).toBe(
+      "/activities?priority=HIGH&team=Platform&page=2&pageSize=10",
+    );
   });
 
   it("uses compact defaults for the first page and default page size", () => {
@@ -25,13 +27,13 @@ describe("navigation helpers", () => {
       assignee: "Alex",
     });
 
-    expect(path).toBe("/?assignee=Alex");
+    expect(path).toBe("/activities?assignee=Alex");
   });
 
   it("sanitizes return paths to local activity list paths", () => {
     expect(sanitizeReturnTo("/?page=2&notice=activity-updated")).toBe("/?page=2");
-    expect(sanitizeReturnTo("https://example.com")).toBe("/");
-    expect(sanitizeReturnTo("//example.com")).toBe("/");
+    expect(sanitizeReturnTo("https://example.com")).toBe("/dashboard");
+    expect(sanitizeReturnTo("//example.com")).toBe("/dashboard");
   });
 
   it("adds one query message without preserving stale messages", () => {

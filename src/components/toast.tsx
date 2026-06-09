@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { UI_COPY } from "@/lib/copy";
 import { type Notification } from "@/lib/notifications";
 
 type ToastProps = {
@@ -30,7 +31,7 @@ export function Toast({ notification }: ToastProps) {
     <div className={`toast toast-${notification.type}`} role="status">
       <p>{notification.message}</p>
       <button
-        aria-label="Dismiss notification"
+        aria-label={UI_COPY.notifications.dismiss}
         className="toast-close"
         onClick={() => setVisible(false)}
         type="button"

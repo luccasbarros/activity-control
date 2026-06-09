@@ -22,6 +22,14 @@ export const statusOptions = [
   { value: ActivityStatus.BLOCKED, label: "Blocked" },
 ] as const;
 
+export const metricLabels = {
+  blocked: statusOptions[3].label,
+  done: statusOptions[2].label,
+  inProgress: statusOptions[1].label,
+  pending: statusOptions[0].label,
+  total: "Total",
+} as const;
+
 export function getLabel<TValue extends string>(
   options: readonly { value: TValue; label: string }[],
   value: TValue,

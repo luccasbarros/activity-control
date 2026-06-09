@@ -1,13 +1,15 @@
 import { type Activity, ActivityStatus } from "@prisma/client";
 import { deleteActivityAction, updateActivityAction } from "@/app/actions";
+import { Trash2 } from "lucide-react";
 import { formatDateTime } from "@/lib/format";
+import { UI_COPY } from "@/lib/copy";
 import {
   categoryOptions,
   getLabel,
   priorityOptions,
   statusOptions,
 } from "@/lib/options";
-import { ActivityForm } from "./activity-form";
+import { ActivityEditDialog } from "./activity-edit-dialog";
 import { ConfirmSubmitButton } from "./confirm-submit-button";
 
 type ActivityTableProps = {
@@ -19,9 +21,11 @@ export function ActivityTable({ activities, returnTo }: ActivityTableProps) {
   if (activities.length === 0) {
     return (
       <section className="empty-state">
-        <h2 className="text-xl font-semibold text-ink">No activities found</h2>
+        <h2 className="text-xl font-semibold text-ink">
+          {UI_COPY.activities.emptyTitle}
+        </h2>
         <p className="mt-2 text-sm leading-6 text-slate">
-          Create a new activity or clear the active filters to see more records.
+          {UI_COPY.activities.emptyDescription}
         </p>
       </section>
     );
@@ -51,36 +55,35 @@ export function ActivityTable({ activities, returnTo }: ActivityTableProps) {
             </div>
 
             <div className="grid gap-2 text-sm text-slate lg:min-w-64">
-              <Info label="Team" value={activity.team} />
-              <Info label="Assignee" value={activity.assignee} />
-              <Info label="Created" value={formatDateTime(activity.createdAt)} />
-              <Info label="Updated" value={formatDateTime(activity.updatedAt)} />
+              <Info label={UI_COPY.fields.team} value={activity.team} />
+              <Info label={UI_COPY.fields.assignee} value={activity.assignee} />
+              <Info label={UI_COPY.fields.created} value={formatDateTime(activity.createdAt)} />
+              <Info label={UI_COPY.fields.updated} value={formatDateTime(activity.updatedAt)} />
             </div>
           </div>
 
-          <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-line pt-4">
-            <details className="w-full rounded-md border border-line bg-white p-4 lg:w-auto lg:min-w-full">
-              <summary className="cursor-pointer text-sm font-semibold text-ink">
-                Edit activity
-              </summary>
-              <div className="mt-4">
-                <ActivityForm
-                  action={updateActivityAction.bind(null, activity.id)}
-                  defaultValues={activity}
-                  returnTo={returnTo}
-                  submitLabel="Save changes"
-                  compact
-                />
-              </div>
-            </details>
-
+          <div className="activity-actions">
+            <ActivityEditDialog
+              action={updateActivityAction.bind(null, activity.id)}
+              activity={{
+                assignee: activity.assignee,
+                category: activity.category,
+                description: activity.description,
+                priority: activity.priority,
+                status: activity.status,
+                team: activity.team,
+                title: activity.title,
+              }}
+              returnTo={returnTo}
+            />
             <form action={deleteActivityAction.bind(null, activity.id)}>
               <input name="returnTo" type="hidden" value={returnTo} />
               <ConfirmSubmitButton
                 className="danger-button"
                 message={`Delete "${activity.title}"? This action cannot be undone.`}
               >
-                Delete
+                <Trash2 aria-hidden="true" size={15} />
+                {UI_COPY.actions.delete}
               </ConfirmSubmitButton>
             </form>
           </div>

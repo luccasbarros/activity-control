@@ -4,6 +4,7 @@ import {
   priorityOptions,
   statusOptions,
 } from "@/lib/options";
+import { UI_COPY } from "@/lib/copy";
 
 type ActivityFormProps = {
   action: (formData: FormData) => void | Promise<void>;
@@ -31,7 +32,7 @@ export function ActivityForm({
             : "grid gap-4 md:grid-cols-[1fr_1fr] lg:grid-cols-[1.2fr_0.8fr_0.8fr]"
         }
       >
-        <Field label="Title">
+        <Field label={UI_COPY.fields.title}>
           <input
             name="title"
             defaultValue={defaultValues?.title ?? ""}
@@ -39,11 +40,11 @@ export function ActivityForm({
             minLength={3}
             maxLength={120}
             className="field"
-            placeholder="Review onboarding flow"
+            placeholder={UI_COPY.formPlaceholders.title}
           />
         </Field>
 
-        <Field label="Team">
+        <Field label={UI_COPY.fields.team}>
           <input
             name="team"
             defaultValue={defaultValues?.team ?? ""}
@@ -51,11 +52,11 @@ export function ActivityForm({
             minLength={2}
             maxLength={80}
             className="field"
-            placeholder="Platform"
+            placeholder={UI_COPY.formPlaceholders.team}
           />
         </Field>
 
-        <Field label="Assignee">
+        <Field label={UI_COPY.fields.assignee}>
           <input
             name="assignee"
             defaultValue={defaultValues?.assignee ?? ""}
@@ -63,12 +64,12 @@ export function ActivityForm({
             minLength={2}
             maxLength={80}
             className="field"
-            placeholder="Alex Morgan"
+            placeholder={UI_COPY.formPlaceholders.assignee}
           />
         </Field>
       </div>
 
-      <Field label="Description">
+      <Field label={UI_COPY.fields.description}>
         <textarea
           name="description"
           defaultValue={defaultValues?.description ?? ""}
@@ -77,12 +78,12 @@ export function ActivityForm({
           maxLength={1000}
           rows={compact ? 3 : 4}
           className="field resize-y"
-          placeholder="Describe the activity, context, and expected outcome."
+          placeholder={UI_COPY.formPlaceholders.description}
         />
       </Field>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Priority">
+        <Field label={UI_COPY.fields.priority}>
           <select
             name="priority"
             defaultValue={defaultValues?.priority ?? "MEDIUM"}
@@ -97,7 +98,7 @@ export function ActivityForm({
           </select>
         </Field>
 
-        <Field label="Category">
+        <Field label={UI_COPY.fields.category}>
           <select
             name="category"
             defaultValue={defaultValues?.category ?? "FEATURE"}
@@ -112,7 +113,7 @@ export function ActivityForm({
           </select>
         </Field>
 
-        <Field label="Status">
+        <Field label={UI_COPY.fields.status}>
           <select
             name="status"
             defaultValue={defaultValues?.status ?? "PENDING"}

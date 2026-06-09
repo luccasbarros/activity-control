@@ -1,12 +1,8 @@
+import { NOTICE_MESSAGES } from "./constants";
+
 export type Notification = {
   type: "success" | "error";
   message: string;
-};
-
-const noticeMessages: Record<string, string> = {
-  "activity-created": "Activity created.",
-  "activity-updated": "Activity updated.",
-  "activity-deleted": "Activity deleted.",
 };
 
 export function getNotification({
@@ -23,10 +19,10 @@ export function getNotification({
     };
   }
 
-  if (notice && noticeMessages[notice]) {
+  if (notice && notice in NOTICE_MESSAGES) {
     return {
       type: "success",
-      message: noticeMessages[notice],
+      message: NOTICE_MESSAGES[notice as keyof typeof NOTICE_MESSAGES],
     };
   }
 

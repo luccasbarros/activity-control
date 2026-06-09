@@ -1,4 +1,6 @@
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "./pagination";
+import { INTERNAL_URL_BASE, ROUTES } from "./routes";
+import { QUERY_PARAMS } from "./constants";
 
 type SearchSource = Record<string, string | string[] | undefined>;
 
@@ -7,8 +9,15 @@ type QueryMessage = {
   value: string;
 };
 
-const listParams = ["priority", "category", "team", "assignee", "page", "pageSize"];
-const transientParams = new Set(["notice", "error"]);
+const listParams = [
+  QUERY_PARAMS.priority,
+  QUERY_PARAMS.category,
+  QUERY_PARAMS.team,
+  QUERY_PARAMS.assignee,
+  QUERY_PARAMS.page,
+  QUERY_PARAMS.pageSize,
+];
+const transientParams = new Set([QUERY_PARAMS.notice, QUERY_PARAMS.error]);
 
 function firstValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
@@ -29,26 +38,26 @@ export function buildActivityListPath(source: SearchSource, overrides: SearchSou
     appendIfPresent(params, key, firstValue(overrides[key] ?? source[key]) ?? null);
   }
 
-  if (params.get("page") === String(DEFAULT_PAGE)) {
-    params.delete("page");
+  if (params.get(QUERY_PARAMS.page) === String(DEFAULT_PAGE)) {
+    params.delete(QUERY_PARAMS.page);
   }
 
-  if (params.get("pageSize") === String(DEFAULT_PAGE_SIZE)) {
-    params.delete("pageSize");
+  if (params.get(QUERY_PARAMS.pageSize) === String(DEFAULT_PAGE_SIZE)) {
+    params.delete(QUERY_PARAMS.pageSize);
   }
 
   const query = params.toString();
-  return query ? `/?${query}` : "/";
+  return query ? `${ROUTES.activities}?${query}` : ROUTES.activities;
 }
 
 export function sanitizeReturnTo(returnTo: FormDataEntryValue | string | null) {
-  const value = String(returnTo ?? "/");
+  const value = String(returnTo ?? ROUTES.dashboard);
 
-  if (!value.startsWith("/") || value.startsWith("//")) {
-    return "/";
+  if (!value.startsWith(ROUTES.root) || value.startsWith("//")) {
+    return ROUTES.dashboard;
   }
 
-  const url = new URL(value, "http://activity-control.local");
+  const url = new URL(value, INTERNAL_URL_BASE);
 
   for (const key of transientParams) {
     url.searchParams.delete(key);
@@ -59,7 +68,7 @@ export function sanitizeReturnTo(returnTo: FormDataEntryValue | string | null) {
 
 export function withQueryMessage(path: string, message: QueryMessage) {
   const cleanPath = sanitizeReturnTo(path);
-  const url = new URL(cleanPath, "http://activity-control.local");
+  const url = new URL(cleanPath, INTERNAL_URL_BASE);
 
   for (const key of transientParams) {
     url.searchParams.delete(key);

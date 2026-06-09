@@ -1,5 +1,10 @@
 import { ActivityStatus, Category, Priority } from "@prisma/client";
 import { z } from "zod";
+import {
+  ACTIVITY_FIELD_LIMITS,
+  FORM_FIELDS,
+} from "./constants";
+import { FORM_LIMIT_MESSAGES, VALIDATION_MESSAGES } from "./copy";
 
 const priorityValues = [
   Priority.LOW,
@@ -27,35 +32,41 @@ export const activityFormSchema = z.object({
   title: z
     .string()
     .trim()
-    .min(1, "Title is required.")
-    .min(3, "Title must have at least 3 characters.")
-    .max(120, "Title must have at most 120 characters."),
+    .min(1, VALIDATION_MESSAGES.requiredTitle)
+    .min(ACTIVITY_FIELD_LIMITS.title.min, FORM_LIMIT_MESSAGES.titleMin)
+    .max(ACTIVITY_FIELD_LIMITS.title.max, FORM_LIMIT_MESSAGES.titleMax),
   description: z
     .string()
     .trim()
-    .min(1, "Description is required.")
-    .min(3, "Description must have at least 3 characters.")
-    .max(1000, "Description must have at most 1000 characters."),
+    .min(1, VALIDATION_MESSAGES.requiredDescription)
+    .min(
+      ACTIVITY_FIELD_LIMITS.description.min,
+      FORM_LIMIT_MESSAGES.descriptionMin,
+    )
+    .max(
+      ACTIVITY_FIELD_LIMITS.description.max,
+      FORM_LIMIT_MESSAGES.descriptionMax,
+    ),
   priority: z.enum(priorityValues, {
-    errorMap: () => ({ message: "Select a valid priority." }),
+    errorMap: () => ({ message: VALIDATION_MESSAGES.invalidPriority }),
   }),
   category: z.enum(categoryValues, {
-    errorMap: () => ({ message: "Select a valid category." }),
+    errorMap: () => ({ message: VALIDATION_MESSAGES.invalidCategory }),
   }),
   team: z
     .string()
     .trim()
-    .min(1, "Team is required.")
-    .min(2, "Team must have at least 2 characters.")
-    .max(80, "Team must have at most 80 characters."),
+    .min(1, VALIDATION_MESSAGES.requiredTeam)
+    .min(ACTIVITY_FIELD_LIMITS.team.min, FORM_LIMIT_MESSAGES.teamMin)
+    .max(ACTIVITY_FIELD_LIMITS.team.max, FORM_LIMIT_MESSAGES.teamMax),
   assignee: z
     .string()
     .trim()
-    .min(1, "Assignee is required.")
-    .min(2, "Assignee must have at least 2 characters.")
-    .max(80, "Assignee must have at most 80 characters."),
+    .min(1, VALIDATION_MESSAGES.requiredAssignee)
+    .min(ACTIVITY_FIELD_LIMITS.assignee.min, FORM_LIMIT_MESSAGES.assigneeMin)
+    .max(ACTIVITY_FIELD_LIMITS.assignee.max, FORM_LIMIT_MESSAGES.assigneeMax),
   status: z.enum(statusValues, {
-    errorMap: () => ({ message: "Select a valid status." }),
+    errorMap: () => ({ message: VALIDATION_MESSAGES.invalidStatus }),
   }),
 });
 
@@ -93,12 +104,12 @@ export function parseActivityForm(input: unknown): ActivityFormState {
 
 export function parseActivityFormData(formData: FormData) {
   return parseActivityForm({
-    title: formData.get("title"),
-    description: formData.get("description"),
-    priority: formData.get("priority"),
-    category: formData.get("category"),
-    team: formData.get("team"),
-    assignee: formData.get("assignee"),
-    status: formData.get("status"),
+    title: formData.get(FORM_FIELDS.title),
+    description: formData.get(FORM_FIELDS.description),
+    priority: formData.get(FORM_FIELDS.priority),
+    category: formData.get(FORM_FIELDS.category),
+    team: formData.get(FORM_FIELDS.team),
+    assignee: formData.get(FORM_FIELDS.assignee),
+    status: formData.get(FORM_FIELDS.status),
   });
 }
