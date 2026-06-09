@@ -5,6 +5,7 @@ import {
   statusOptions,
 } from "@/lib/options";
 import { UI_COPY } from "@/lib/copy";
+import { PendingSubmitButton } from "./pending-submit-button";
 
 type ActivityFormProps = {
   action: (formData: FormData) => void | Promise<void>;
@@ -21,6 +22,8 @@ export function ActivityForm({
   compact = false,
   returnTo,
 }: ActivityFormProps) {
+  const pendingLabel = getPendingSubmitLabel(submitLabel);
+
   return (
     <form action={action} className={compact ? "space-y-4" : "space-y-5"}>
       {returnTo ? <input name="returnTo" type="hidden" value={returnTo} /> : null}
@@ -130,12 +133,27 @@ export function ActivityForm({
       </div>
 
       <div className="flex justify-end">
-        <button type="submit" className="primary-button">
+        <PendingSubmitButton
+          className="primary-button"
+          pendingLabel={pendingLabel}
+        >
           {submitLabel}
-        </button>
+        </PendingSubmitButton>
       </div>
     </form>
   );
+}
+
+function getPendingSubmitLabel(submitLabel: string) {
+  if (submitLabel === UI_COPY.actions.saveChanges) {
+    return UI_COPY.loading.saving;
+  }
+
+  if (submitLabel === UI_COPY.actions.createActivity) {
+    return UI_COPY.loading.creating;
+  }
+
+  return UI_COPY.loading.loading;
 }
 
 function Field({

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 import { UI_COPY } from "@/lib/copy";
+import { TOAST_DURATION_MS } from "@/lib/constants";
 import { type Notification } from "@/lib/notifications";
 
 type ToastProps = {
@@ -18,7 +19,7 @@ export function Toast({ notification }: ToastProps) {
       return;
     }
 
-    const timer = window.setTimeout(() => setVisible(false), 4500);
+    const timer = window.setTimeout(() => setVisible(false), TOAST_DURATION_MS);
 
     return () => window.clearTimeout(timer);
   }, [notification]);
@@ -27,8 +28,17 @@ export function Toast({ notification }: ToastProps) {
     return null;
   }
 
+  const toastStyle = {
+    "--toast-duration": `${TOAST_DURATION_MS}ms`,
+  } as CSSProperties;
+  const role = notification.type === "error" ? "alert" : "status";
+
   return (
-    <div className={`toast toast-${notification.type}`} role="status">
+    <div
+      className={`toast toast-${notification.type}`}
+      role={role}
+      style={toastStyle}
+    >
       <p>{notification.message}</p>
       <button
         aria-label={UI_COPY.notifications.dismiss}
@@ -38,6 +48,7 @@ export function Toast({ notification }: ToastProps) {
       >
         ×
       </button>
+      <span aria-hidden="true" className="toast-progress" />
     </div>
   );
 }

@@ -58,6 +58,7 @@ export const LOG_FAILURE_REASONS = {
 } as const;
 
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
+export const TOAST_DURATION_MS = 4500;
 
 export const ACTIVITY_CHANGE_SUMMARIES = {
   created: "Created activity.",

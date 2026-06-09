@@ -2,20 +2,19 @@
 
 import { type ReactNode } from "react";
 import { useFormStatus } from "react-dom";
-import { UI_COPY } from "@/lib/copy";
 import { ButtonSpinner } from "./button-spinner";
 
-type ConfirmSubmitButtonProps = {
+type PendingSubmitButtonProps = {
   children: ReactNode;
   className?: string;
-  message: string;
+  pendingLabel: string;
 };
 
-export function ConfirmSubmitButton({
+export function PendingSubmitButton({
   children,
   className,
-  message,
-}: ConfirmSubmitButtonProps) {
+  pendingLabel,
+}: PendingSubmitButtonProps) {
   const { pending } = useFormStatus();
 
   return (
@@ -23,17 +22,12 @@ export function ConfirmSubmitButton({
       aria-busy={pending}
       className={className}
       disabled={pending}
-      onClick={(event) => {
-        if (!window.confirm(message)) {
-          event.preventDefault();
-        }
-      }}
       type="submit"
     >
       {pending ? (
         <>
           <ButtonSpinner />
-          {UI_COPY.loading.deleting}
+          {pendingLabel}
         </>
       ) : (
         children

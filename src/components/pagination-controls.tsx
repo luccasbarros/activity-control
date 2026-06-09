@@ -1,4 +1,8 @@
-import Link from "next/link";
+"use client";
+
+import { type FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { flushSync } from "react-dom";
 import { UI_COPY } from "@/lib/copy";
 import { type ActivityFilters } from "@/lib/filters";
 import { buildActivityListPath } from "@/lib/navigation";
@@ -7,6 +11,8 @@ import {
   PAGE_SIZE_OPTIONS,
   type PaginationState,
 } from "@/lib/pagination";
+import { ButtonSpinner } from "./button-spinner";
+import { PendingLink } from "./pending-link";
 
 type PaginationControlsProps = {
   filters: ActivityFilters;
@@ -17,10 +23,43 @@ export function PaginationControls({
   filters,
   pagination,
 }: PaginationControlsProps) {
+  const router = useRouter();
+  const [pageSizePending, setPageSizePending] = useState(false);
   const source = {
     ...filters,
     pageSize: String(pagination.pageSize),
   };
+
+  useEffect(() => {
+    setPageSizePending(false);
+  }, [pagination.currentPage, pagination.pageSize, pagination.totalItems]);
+
+  function handlePageSizeSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+    const path = buildActivityListPath(
+      {
+        assignee: getFormValue(formData, "assignee"),
+        category: getFormValue(formData, "category"),
+        priority: getFormValue(formData, "priority"),
+        team: getFormValue(formData, "team"),
+      },
+      {
+        page: "1",
+        pageSize: getFormValue(formData, "pageSize"),
+      },
+    );
+
+    flushSync(() => setPageSizePending(true));
+
+    if (path === `${window.location.pathname}${window.location.search}`) {
+      setPageSizePending(false);
+      return;
+    }
+
+    router.push(path);
+  }
 
   return (
     <nav
@@ -34,7 +73,10 @@ export function PaginationControls({
       </p>
 
       <div className="flex flex-wrap items-center gap-3">
-        <form className="flex items-center gap-2">
+        <form
+          className="flex items-center gap-2"
+          onSubmit={handlePageSizeSubmit}
+        >
           {filters.priority ? (
             <input type="hidden" name="priority" value={filters.priority} />
           ) : null}
@@ -60,21 +102,34 @@ export function PaginationControls({
               </option>
             ))}
           </select>
-          <button className="ghost-button" type="submit">
-            {UI_COPY.actions.set}
+          <button
+            aria-busy={pageSizePending}
+            className="ghost-button"
+            disabled={pageSizePending}
+            type="submit"
+          >
+            {pageSizePending ? (
+              <>
+                <ButtonSpinner />
+                {UI_COPY.loading.updating}
+              </>
+            ) : (
+              UI_COPY.actions.set
+            )}
           </button>
         </form>
 
         <div className="flex items-center gap-2">
           {pagination.hasPreviousPage ? (
-            <Link
+            <PendingLink
               className="ghost-button"
               href={buildActivityListPath(source, {
                 page: String(pagination.currentPage - 1),
               })}
+              pendingLabel={UI_COPY.loading.loading}
             >
               {UI_COPY.pagination.previous}
-            </Link>
+            </PendingLink>
           ) : (
             <span className="disabled-button">{UI_COPY.pagination.previous}</span>
           )}
@@ -85,28 +140,36 @@ export function PaginationControls({
           </span>
 
           {pagination.hasNextPage ? (
-            <Link
+            <PendingLink
               className="ghost-button"
               href={buildActivityListPath(source, {
                 page: String(pagination.currentPage + 1),
               })}
+              pendingLabel={UI_COPY.loading.loading}
             >
               {UI_COPY.pagination.next}
-            </Link>
+            </PendingLink>
           ) : (
             <span className="disabled-button">{UI_COPY.pagination.next}</span>
           )}
         </div>
 
         {pagination.pageSize !== DEFAULT_PAGE_SIZE ? (
-          <Link
+          <PendingLink
             className="ghost-button"
             href={buildActivityListPath(filters, { page: "1" })}
+            pendingLabel={UI_COPY.loading.resetting}
           >
             {UI_COPY.pagination.resetSize}
-          </Link>
+          </PendingLink>
         ) : null}
       </div>
     </nav>
   );
+}
+
+function getFormValue(formData: FormData, name: string) {
+  const value = formData.get(name);
+
+  return typeof value === "string" ? value : undefined;
 }

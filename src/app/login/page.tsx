@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { UI_COPY } from "@/lib/copy";
 import { PRODUCT_NAME } from "@/lib/product";
 import { ROUTES } from "@/lib/routes";
+import { PendingSubmitButton } from "@/components/pending-submit-button";
 
 type LoginPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -63,9 +64,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             />
           </label>
 
-          <button className="primary-button w-full" type="submit">
+          <PendingSubmitButton
+            className="primary-button w-full"
+            pendingLabel={UI_COPY.loading.signingIn}
+          >
             {UI_COPY.login.signIn}
-          </button>
+          </PendingSubmitButton>
         </form>
       </section>
     </main>

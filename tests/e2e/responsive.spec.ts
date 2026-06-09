@@ -115,7 +115,31 @@ test.describe("responsive activity control experience", () => {
     await page.goto("/activities?notice=activity-created");
     await expect(page.getByRole("status")).toContainText("Activity created");
     await expect(page.getByRole("button", { name: "Dismiss notification" })).toBeVisible();
+    await expect(page.locator(".toast-progress")).toBeVisible();
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const toast = document.querySelector(".toast");
+          const rect = toast?.getBoundingClientRect();
+
+          return rect
+            ? Math.abs(rect.left + rect.width / 2 - window.innerWidth / 2)
+            : Number.POSITIVE_INFINITY;
+        }),
+      )
+      .toBeLessThan(32);
     await expectNoHorizontalOverflow(page);
+
+    await page.route("**/activities*pageSize=10*", async (route) => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      await route.continue();
+    });
+    await page.goto("/activities");
+    await page.getByLabel("Page size").selectOption("10");
+    const pageSizeClick = page.getByRole("button", { name: "Set" }).click();
+    await expect(page.getByRole("button", { name: "Updating" })).toBeVisible();
+    await pageSizeClick;
+    await expect(page).toHaveURL(/pageSize=10/);
   });
 
   test("mobile bottom navigation moves between routes", async ({ page }) => {

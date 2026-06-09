@@ -9,6 +9,7 @@ import {
   MobileBottomNavigation,
   SidebarNavigation,
 } from "./app-navigation";
+import { PendingSubmitButton } from "./pending-submit-button";
 import { ThemeToggle } from "./theme-toggle";
 
 type AppShellProps = {
@@ -76,10 +77,13 @@ export function AppShell({ children, user }: AppShellProps) {
                   <span>{user.email}</span>
                 </div>
                 <form action={logoutAction}>
-                  <button className="menu-action" type="submit">
+                  <PendingSubmitButton
+                    className="menu-action"
+                    pendingLabel={UI_COPY.loading.loggingOut}
+                  >
                     <LogOut aria-hidden="true" size={16} />
                     {UI_COPY.account.logout}
-                  </button>
+                  </PendingSubmitButton>
                 </form>
               </div>
             </details>

@@ -74,6 +74,17 @@ export const UI_COPY = {
     description: "Use the seeded local account to review the authenticated dashboard.",
     signIn: "Sign in",
   },
+  loading: {
+    applying: "Applying",
+    creating: "Creating",
+    deleting: "Deleting",
+    loading: "Loading",
+    loggingOut: "Logging out",
+    resetting: "Resetting",
+    saving: "Saving",
+    signingIn: "Signing in",
+    updating: "Updating",
+  },
   navigation: {
     newActivityShort: "New",
     mobile: "Mobile navigation",
