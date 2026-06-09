@@ -1,6 +1,6 @@
 # Activity Control Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Internal implementation checklist kept to show SDD/SDT traceability from plan to implementation.
 
 **Goal:** Build a local Next.js/React/TypeScript activity control app backed by SQLite/Prisma and traceable to `docs/sdd-spec.md`.
 
@@ -83,7 +83,7 @@
 - Create: `README.md`
 - Create: `docs/ai-skill-usage.md`
 
-- [x] Document setup commands exactly as expected by the evaluator.
+- [x] Document setup commands exactly as requested.
 - [x] Explain architecture, validation, Prisma/SQLite, and trade-offs.
 - [x] Record skill/AI usage with human review boundaries.
 - [x] Commit as `docs: add setup ai evidence and technical notes`.

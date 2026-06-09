@@ -16,7 +16,9 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-The SQLite database is stored at `prisma/dev.db`. The Prisma datasource uses a direct local SQLite path so the expected evaluator commands work without copying an `.env` file.
+The SQLite database is stored at `prisma/dev.db`. The Prisma datasource uses a direct local SQLite path so the requested setup commands work without copying an `.env` file.
+
+`npm install` runs `prisma generate` through `postinstall`, so TypeScript can resolve generated Prisma models immediately after dependency installation.
 
 Seeded login:
 
@@ -36,7 +38,7 @@ npm run build
 
 ## Optional Docker
 
-Docker is included as a delivery differential, not as the primary evaluator path.
+Docker is optional. The primary setup path remains the local source workflow above.
 
 ```bash
 docker compose up --build
@@ -107,6 +109,7 @@ The latest local verification covered:
 ```bash
 npx prisma migrate reset --force
 npx prisma migrate dev
+npx tsc --noEmit
 npm test
 npm run lint
 npm run build
@@ -141,7 +144,7 @@ Human decisions constrained scope, reviewed the generated code, kept the UI in E
 ## Trade-Offs
 
 - Server Actions were used instead of API Routes because the app is a local App Router CRUD tool and does not need a public API surface.
-- Tailwind CSS was used instead of ShadCN to keep the deadline focused on working behavior and documentation.
+- Tailwind CSS was used instead of ShadCN to keep the implementation focused on working behavior and documentation.
 - Authentication was implemented as a small local boundary, not as a full identity platform. In a production internal tool, this would move to OAuth, SSO, or a managed identity provider.
 - Docker was added as an optional runtime, but the primary path remains local source execution because that is the command sequence requested in the challenge.
 - Lightweight change history was implemented for operational visibility. Full event sourcing or field-level audit trails were intentionally left out because they would be excessive for the scope.

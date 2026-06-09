@@ -1,6 +1,6 @@
 # Architecture Notes
 
-Activity Control is a local-first activity management app. The architecture keeps the challenge scope small while showing how the product could grow without rewriting the core.
+Activity Control is a local-first activity management app. The architecture keeps the project scope small while showing how the product could grow without rewriting the core.
 
 ## Request Flow
 
@@ -26,7 +26,7 @@ The dashboard is server-rendered. Filters are encoded as URL query parameters, p
 | Filtering | `src/lib/filters.ts` | Normalize query params and build Prisma filters. |
 | Persistence | `prisma/schema.prisma`, `src/lib/db.ts` | Define SQLite schema, Prisma models, indexes, and client access. |
 | Activity history | `src/lib/activity-change.ts`, `src/components/change-history.tsx` | Summarize create/update/delete events and render recent changes. |
-| Verification | `src/lib/*.test.ts` | Cover logic that is easy to regress under a short deadline. |
+| Verification | `src/lib/*.test.ts` | Cover logic that is easy to regress as the product evolves. |
 
 ## Data Model Shape
 
@@ -53,7 +53,7 @@ Implemented:
 - protected dashboard;
 - logout action.
 
-Trade-off: this is intentionally not OAuth, SSO, RBAC, password reset, or invitation management. Those are valid next steps for a real company tool, but they would be oversized for this local technical challenge.
+Trade-off: this is intentionally not OAuth, SSO, RBAC, password reset, or invitation management. Those are valid next steps for a real company tool, but they are beyond this project scope.
 
 ## Change History Decision
 
@@ -69,7 +69,7 @@ Trade-off: the history stores summaries, not a full before/after diff. A complia
 
 ## SQLite And Prisma Decision
 
-SQLite and Prisma directly satisfy the challenge. The Prisma datasource uses `file:./dev.db` so the requested evaluator commands work without creating an `.env` file.
+SQLite and Prisma directly satisfy the data requirement. The Prisma datasource uses `file:./dev.db` so the requested setup commands work without creating an `.env` file.
 
 Trade-off: a multi-environment production setup should move the datasource to `env("DATABASE_URL")`, externalize secrets, and use a server database such as PostgreSQL. For local evaluation, direct SQLite is simpler and more reproducible.
 

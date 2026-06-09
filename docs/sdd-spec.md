@@ -72,7 +72,7 @@ The list and edit surfaces must show:
 
 ### FR8. Seed Data
 
-The project must include representative seed data so the evaluator can run the app locally and see realistic content immediately.
+The project must include representative seed data so the app can run locally with realistic content immediately.
 
 ### FR9. Dashboard Metrics
 
@@ -185,11 +185,11 @@ ASCII labels are used in source code and database values for portability. User-f
 
 ## 7. Acceptance Criteria
 
-- A reviewer can run the expected commands without extra services.
-- A reviewer can create an activity and see it in the list.
-- A reviewer can edit an existing activity and see `updatedAt` change.
-- A reviewer can delete an activity and see metrics update.
-- A reviewer can filter by priority, category, team, and assignee.
+- The requested setup commands run without extra services.
+- A user can create an activity and see it in the list.
+- A user can edit an existing activity and see `updatedAt` change.
+- A user can delete an activity and see metrics update.
+- A user can filter by priority, category, team, and assignee.
 - Invalid form submissions are rejected with actionable messages.
 - Prisma schema and migration are committed.
 - README documents setup, architecture, AI/Skill usage, and validation.
@@ -240,7 +240,7 @@ Each change should include:
 - actor name;
 - created timestamp.
 
-The dashboard should show recent changes so reviewers can see operational auditability.
+The dashboard should show recent changes so the app exposes operational auditability.
 
 ### E3. Docker
 
@@ -251,7 +251,7 @@ The repository should include optional Docker support:
 - `docker-compose.yml`;
 - README instructions.
 
-Docker must be optional. The evaluator's expected local commands remain the primary path.
+Docker must be optional. The requested local source commands remain the primary path.
 
 ### E4. Architecture Documentation
 

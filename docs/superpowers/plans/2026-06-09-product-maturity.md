@@ -1,8 +1,8 @@
 # Product Maturity Enhancement Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Internal implementation checklist kept to show SDD/SDT traceability from plan to implementation.
 
-**Goal:** Add small senior-level product engineering signals without making the activity control app unnecessarily complex.
+**Goal:** Add focused product enhancements that support a realistic internal activity workflow while keeping the local setup simple.
 
 **Architecture:** Keep the app local-first. Add a simple auth boundary with a seeded user and signed cookie, record lightweight activity changes from Server Actions, provide optional Docker execution, and document the architecture/trade-offs.
 
@@ -70,7 +70,7 @@
 
 - [x] Add a production start script.
 - [x] Add optional Docker build/run files.
-- [x] Document Docker as optional, not the primary evaluator path.
+- [x] Document Docker as optional, not the primary source setup path.
 - [x] Commit as `chore: add optional docker runtime`.
 
 ### Task 5: Architecture And Verification Docs

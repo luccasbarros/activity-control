@@ -77,8 +77,8 @@ export default async function Home({ searchParams }: PageProps) {
         <div>
           <h2 className="text-2xl font-semibold text-ink">Activity list</h2>
           <p className="mt-2 text-sm leading-6 text-slate">
-            Filters are encoded in the URL so a reviewer can reproduce the same
-            view after refresh.
+            Filters are encoded in the URL so the same view can be reproduced
+            after refresh.
           </p>
         </div>
         <FilterBar filters={filters} />

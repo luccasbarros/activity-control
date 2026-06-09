@@ -29,7 +29,7 @@ The skill workflow helped transform the challenge prompt into a committed specif
 
 ## Human Review Boundaries
 
-The AI assistant did not define scope autonomously. Scope was constrained by the challenge prompt and by delivery risk.
+The AI assistant did not define scope autonomously. Scope was constrained by the challenge prompt, implementation risk, and verification evidence.
 
 Human-owned decisions:
 
