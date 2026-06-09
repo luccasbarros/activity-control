@@ -211,7 +211,60 @@ ASCII labels are used in source code and database values for portability. User-f
 - Use manual browser checks for the create, edit, delete, and filter flows.
 - Use `npm run lint`, `npm test`, and `npm run build` before final submission.
 
-## 10. Scope Decisions
+## 10. Product-Maturity Enhancements
+
+These enhancements are intentionally small. They show a scalable product shape without changing the expected local run commands.
+
+### E1. Local Authentication
+
+The app should include a simple local authentication gate:
+
+- seeded demo user;
+- email and password login;
+- signed HTTP-only session cookie;
+- logout action;
+- protected activity dashboard.
+
+This is not a full identity platform. It is a clear boundary that can later be replaced by OAuth, SSO, or a managed identity provider.
+
+### E2. Activity Change History
+
+The app should record a lightweight activity history for create, update, and delete actions.
+
+Each change should include:
+
+- activity id when available;
+- activity title;
+- change type;
+- summary;
+- actor name;
+- created timestamp.
+
+The dashboard should show recent changes so reviewers can see operational auditability.
+
+### E3. Docker
+
+The repository should include optional Docker support:
+
+- `Dockerfile`;
+- `.dockerignore`;
+- `docker-compose.yml`;
+- README instructions.
+
+Docker must be optional. The evaluator's expected local commands remain the primary path.
+
+### E4. Architecture Documentation
+
+The repository should include a concise architecture document explaining:
+
+- request flow;
+- component/data boundaries;
+- authentication boundary;
+- Prisma/SQLite persistence;
+- testing and verification strategy;
+- trade-offs and future paths.
+
+## 11. Scope Decisions
 
 ### Included
 
@@ -221,16 +274,19 @@ ASCII labels are used in source code and database values for portability. User-f
 - Seed data.
 - Dashboard metrics.
 - Basic automated tests around validation and filtering.
+- Local authentication gate.
+- Lightweight activity change history.
+- Optional Docker support.
+- Architecture documentation.
 
 ### Excluded
 
-- Authentication: not required and would increase setup time.
 - Multi-user permissions: not required by the challenge.
-- Docker: useful but lower priority than a working local source run.
-- Full audit history: listed as a differential, but timestamps cover the required tracking.
+- Full production identity provider: the local demo auth can be replaced later.
+- Full audit/event-sourcing model: the lightweight change history is enough for this challenge.
 - External deployment: the expected delivery is local execution from source.
 
-## 11. SDT Traceability
+## 12. SDT Traceability
 
 | Spec Item | Implementation Target |
 | --- | --- |
@@ -241,5 +297,8 @@ ASCII labels are used in source code and database values for portability. User-f
 | CRUD | `src/app/actions.ts` |
 | UI flows | `src/app/page.tsx`, `src/components/*` |
 | Metrics | `src/lib/metrics.ts`, dashboard cards |
+| Authentication | `src/lib/password.ts`, `src/lib/session.ts`, `src/lib/auth.ts`, `src/app/login/*` |
+| Change history | `prisma/schema.prisma`, `src/lib/activity-change.ts`, `src/components/change-history.tsx` |
+| Docker | `Dockerfile`, `.dockerignore`, `docker-compose.yml` |
+| Architecture documentation | `docs/architecture.md` |
 | AI evidence | `docs/ai-skill-usage.md` |
-| technical rationale | `docs/technical-rationale.md` |
