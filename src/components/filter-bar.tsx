@@ -12,7 +12,10 @@ type FilterBarProps = {
 
 export function FilterBar({ filters, pageSize }: FilterBarProps) {
   return (
-    <form className="panel grid gap-4 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]">
+    <form
+      aria-label={UI_COPY.filters.ariaLabel}
+      className="panel grid gap-4 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]"
+    >
       <input name="pageSize" type="hidden" value={pageSize} />
 
       <label className="grid gap-2 text-sm font-medium text-ink">

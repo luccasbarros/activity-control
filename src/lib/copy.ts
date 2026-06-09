@@ -51,6 +51,7 @@ export const UI_COPY = {
     updated: "Updated",
   },
   filters: {
+    ariaLabel: "Activity filters",
     allCategories: "All categories",
     allPriorities: "All priorities",
     assigneePlaceholder: "Alex",
