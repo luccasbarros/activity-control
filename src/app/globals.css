@@ -14,13 +14,15 @@
   --color-paper: #f6f8fb;
   --color-primary: #1f4fd7;
   --color-primary-hover: #173fb0;
+  --color-primary-soft: #edf3ff;
   --color-danger: #b42318;
   --color-danger-bg: #fff5f5;
   --color-success: #16703c;
   --color-success-bg: #eaf8ef;
   --color-warning: #b54708;
   --color-warning-bg: #fff4e6;
-  --shadow-soft: 0 16px 40px rgba(23, 32, 51, 0.07);
+  --shadow-soft: 0 14px 34px rgba(23, 32, 51, 0.055);
+  --shadow-lift: 0 18px 38px rgba(23, 32, 51, 0.11);
 }
 
 :root[data-theme="dark"] {
@@ -35,13 +37,15 @@
   --color-paper: #0d1117;
   --color-primary: #6aa0ff;
   --color-primary-hover: #8cb6ff;
+  --color-primary-soft: #162845;
   --color-danger: #ff8d86;
   --color-danger-bg: #311c20;
   --color-success: #71d68b;
   --color-success-bg: #132a1d;
   --color-warning: #ffc078;
   --color-warning-bg: #302315;
-  --shadow-soft: 0 18px 46px rgba(0, 0, 0, 0.28);
+  --shadow-soft: 0 18px 46px rgba(0, 0, 0, 0.22);
+  --shadow-lift: 0 22px 52px rgba(0, 0, 0, 0.32);
 }
 
 * {
@@ -62,6 +66,8 @@ body {
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 button,
@@ -78,6 +84,22 @@ a {
 
 button {
   cursor: pointer;
+}
+
+button,
+a,
+summary,
+.activity-card,
+.panel,
+.metric-card,
+.field {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
 }
 
 button:disabled {
@@ -123,7 +145,7 @@ button:disabled {
 .version-label {
   color: var(--color-muted);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -132,7 +154,7 @@ button:disabled {
   margin-top: 2px;
   color: var(--color-ink);
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 650;
 }
 
 .topbar-actions {
@@ -166,7 +188,7 @@ button:disabled {
   background: var(--color-ink);
   color: var(--color-surface);
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 750;
 }
 
 .brand-mark {
@@ -184,6 +206,7 @@ button:disabled {
   display: block;
   color: var(--color-ink);
   font-size: 14px;
+  font-weight: 650;
   line-height: 1.2;
 }
 
@@ -208,7 +231,7 @@ button:disabled {
 .sidebar-nav-link,
 .mobile-bottom-link {
   color: var(--color-slate);
-  font-weight: 800;
+  font-weight: 650;
 }
 
 .sidebar-nav-link {
@@ -222,9 +245,15 @@ button:disabled {
 }
 
 .sidebar-nav-link:hover,
-.sidebar-nav-link:focus-visible,
+.sidebar-nav-link:focus-visible {
+  background: color-mix(in srgb, var(--color-primary) 7%, transparent);
+  color: var(--color-ink);
+  outline: none;
+  transform: translateX(2px);
+}
+
 .sidebar-nav-link[data-active="true"] {
-  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 11%, transparent);
   color: var(--color-ink);
   outline: none;
 }
@@ -258,7 +287,16 @@ button:disabled {
   border-radius: 8px;
   background: var(--color-surface);
   padding: 5px 9px 5px 5px;
+  cursor: pointer;
   list-style: none;
+}
+
+.account-summary:hover,
+.account-summary:focus-visible {
+  border-color: color-mix(in srgb, var(--color-primary) 34%, var(--color-line));
+  background: var(--color-primary-soft);
+  box-shadow: 0 8px 20px rgba(23, 32, 51, 0.06);
+  outline: none;
 }
 
 .account-summary::-webkit-details-marker {
@@ -305,13 +343,16 @@ button:disabled {
   color: var(--color-ink);
   padding: 8px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 650;
+  cursor: pointer;
 }
 
 .menu-action:hover,
 .menu-action:focus-visible {
-  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 9%, transparent);
+  color: var(--color-primary);
   outline: none;
+  transform: translateX(2px);
 }
 
 .mobile-bottom-nav {
@@ -339,6 +380,13 @@ button:disabled {
   font-size: 11px;
 }
 
+.mobile-bottom-link:hover,
+.mobile-bottom-link:focus-visible {
+  background: color-mix(in srgb, var(--color-primary) 7%, transparent);
+  color: var(--color-ink);
+  outline: none;
+}
+
 .mobile-bottom-link[data-active="true"] {
   background: color-mix(in srgb, var(--color-primary) 12%, transparent);
   color: var(--color-ink);
@@ -357,8 +405,17 @@ button:disabled {
 .page-heading h1 {
   margin: 4px 0 0;
   font-size: clamp(28px, 4vw, 42px);
-  font-weight: 850;
+  font-weight: 680;
   line-height: 1.05;
+}
+
+.activity-card h2 {
+  font-weight: 650;
+}
+
+.activity-card strong,
+.history-item strong {
+  font-weight: 620;
 }
 
 .page-heading p:not(.page-eyebrow) {
@@ -382,6 +439,14 @@ button:disabled {
   border-radius: 8px;
   background: color-mix(in srgb, var(--color-surface) 94%, transparent);
   box-shadow: var(--shadow-soft);
+}
+
+.activity-card:hover,
+.metric-card:hover,
+.history-item:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 20%, var(--color-line));
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-1px);
 }
 
 .panel,
@@ -413,7 +478,7 @@ button:disabled {
   margin: 0;
   color: var(--color-ink);
   font-size: 18px;
-  font-weight: 850;
+  font-weight: 700;
 }
 
 .panel-title-row {
@@ -440,7 +505,7 @@ button:disabled {
   gap: 12px;
   color: var(--color-slate);
   font-size: 13px;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 .bar-row-header strong {
@@ -499,7 +564,7 @@ button:disabled {
   color: var(--color-slate);
   padding: 6px 10px;
   font-size: 12px;
-  font-weight: 850;
+  font-weight: 650;
 }
 
 .alert-row,
@@ -550,6 +615,11 @@ button:disabled {
   outline: none;
 }
 
+.field:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 22%, var(--color-line));
+  background: var(--color-surface);
+}
+
 .field:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
@@ -570,12 +640,14 @@ button:disabled {
   border: 1px solid transparent;
   padding: 9px 14px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 650;
   line-height: 1;
   transition:
-    transform 140ms ease,
-    border-color 140ms ease,
-    background 140ms ease;
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease;
 }
 
 .icon-button {
@@ -589,15 +661,21 @@ button:disabled {
 .primary-button {
   background: var(--color-primary);
   color: #fff;
+  box-shadow: 0 10px 18px rgba(31, 79, 215, 0.12);
 }
 
 .primary-button:hover {
   background: var(--color-primary-hover);
+  box-shadow: 0 14px 24px rgba(31, 79, 215, 0.18);
 }
 
 .secondary-button {
   background: var(--color-ink);
   color: var(--color-surface);
+}
+
+.secondary-button:hover {
+  box-shadow: 0 12px 22px rgba(23, 32, 51, 0.16);
 }
 
 .ghost-button {
@@ -606,10 +684,23 @@ button:disabled {
   color: var(--color-ink);
 }
 
+.ghost-button:hover,
+.icon-button:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 26%, var(--color-line));
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
 .danger-button {
   border-color: color-mix(in srgb, var(--color-danger) 36%, transparent);
   background: var(--color-danger-bg);
   color: var(--color-danger);
+}
+
+.danger-button:hover {
+  border-color: color-mix(in srgb, var(--color-danger) 52%, transparent);
+  background: color-mix(in srgb, var(--color-danger-bg) 82%, var(--color-surface));
+  box-shadow: 0 12px 22px rgba(180, 35, 24, 0.12);
 }
 
 .disabled-button {
@@ -633,7 +724,7 @@ button:disabled {
   gap: 6px;
   color: var(--color-primary);
   font-size: 13px;
-  font-weight: 850;
+  font-weight: 650;
 }
 
 .pill,
@@ -644,7 +735,7 @@ button:disabled {
   border-radius: 999px;
   padding: 5px 10px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 650;
   line-height: 1;
 }
 
@@ -719,7 +810,7 @@ button:disabled {
   padding: 12px 14px;
   color: var(--color-danger);
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 650;
 }
 
 .toast {
@@ -738,7 +829,7 @@ button:disabled {
   box-shadow: var(--shadow-soft);
   color: var(--color-ink);
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 650;
 }
 
 .toast-success {
@@ -759,7 +850,7 @@ button:disabled {
   color: inherit;
   cursor: pointer;
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1;
 }
 
