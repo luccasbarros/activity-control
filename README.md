@@ -85,7 +85,6 @@ For local HTTP access, `docker-compose.yml` sets `AUTH_COOKIE_SECURE=false`. A r
 - Product-maturity plan: `docs/superpowers/plans/2026-06-09-product-maturity.md`
 - Architecture notes: `docs/architecture.md`
 - AI/Skill evidence: `docs/ai-skill-usage.md`
-- Resume-safe submission for continuation: `docs/agent-submission.md`
 
 ## Architecture
 
@@ -169,7 +168,7 @@ The skill-assisted workflow supported:
 - adding a small authentication boundary and change-history model;
 - reviewing documentation, Docker support, CI, local observability, and trade-offs.
 
-Human decisions constrained scope, reviewed the generated code, kept the UI in English, chose local-first SQLite setup, and ran verification commands. See `docs/ai-skill-usage.md` for evidence.
+Planning assistance constrained scope, reviewed the generated code, kept the UI in English, chose local-first SQLite setup, and ran verification commands. See `docs/ai-skill-usage.md` for evidence.
 
 ## Trade-Offs
 

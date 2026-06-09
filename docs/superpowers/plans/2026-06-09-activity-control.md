@@ -86,7 +86,7 @@
 - [x] Document setup commands exactly as requested.
 - [x] Explain architecture, validation, Prisma/SQLite, and trade-offs.
 - [x] Record skill/AI usage with human review boundaries.
-- [x] Commit as `docs: add setup ai evidence and technical notes`.
+- [x] Commit as `docs: add setup and ai evidence`.
 
 ### Task 6: Final Verification
 

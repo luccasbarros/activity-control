@@ -6,7 +6,7 @@ This project is a local web application for managing internal team activities. I
 
 The system must let a user create, list, edit, delete, filter, and track activities by priority, category, team, owner, status, creation date, and update date.
 
-All deliverable-facing language must be English: UI copy, README, evidence notes, technical notes, and code comments. The original challenge wording is in Portuguese, so this specification keeps a mapping from the original Portuguese domain terms to English user-facing labels.
+All deliverable-facing language must be English: UI copy, README, evidence notes, and code comments. The original challenge wording is in Portuguese, so this specification keeps a mapping from the original Portuguese domain terms to English user-facing labels.
 
 ## 2. Product Goals
 
@@ -243,7 +243,7 @@ ASCII labels are used in source code and database values for portability. User-f
 - GitHub Actions CI is committed for repository-level verification.
 - README documents setup, architecture, AI/Skill usage, and validation.
 - `docs/ai-skill-usage.md` records evidence of assisted work.
-- A architecture note explains why key decisions were made.
+- Architecture and AI evidence notes explain why key technical decisions were made.
 
 ## 8. Error Cases
 

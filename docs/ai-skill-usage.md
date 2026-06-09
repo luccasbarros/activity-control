@@ -32,11 +32,11 @@ The skill workflow helped transform the challenge prompt into a committed specif
 | Documentation | documentation assistance | `README.md`, `docs/architecture.md`, `docs/ai-skill-usage.md`, `docs/design/*` |
 | Verification discipline | `superpowers:verification-before-completion` | repeated `npm test`, `npm run lint`, `npm run build`, Prisma commands, Playwright checks |
 
-## Human Review Boundaries
+## Review Boundaries
 
 The AI assistant did not define scope autonomously. Scope was constrained by the challenge prompt, implementation risk, and verification evidence.
 
-Human-owned decisions:
+Review-owned decisions:
 
 - Keep all project artifacts in English.
 - Use a direct local SQLite datasource so the expected commands work without extra setup.
@@ -60,7 +60,6 @@ Human-owned decisions:
 - Tests were written for validation and filters before the helper implementation.
 - Additional tests cover password hashing, session token verification, pagination, navigation helpers, notifications, and activity change summaries.
 - Playwright e2e coverage checks login, route navigation, edit modal, pagination, toast feedback, and horizontal overflow across desktop, tablet, and mobile widths.
-- `docs/agent-submission.md` records continuation state so project memory does not depend only on chat context.
 - `docs/design/reference.md`, `docs/design/ui-decisions.md`, and `docs/design/responsive-checklist.md` record the UI direction and responsive acceptance checks.
 - `.github/workflows/ci.yml` records the repeatable repository verification flow.
 - Commit history shows the progression from specification to implementation.
@@ -85,7 +84,7 @@ docker compose config
 docker compose build
 ```
 
-The final verification commands are documented in the final submission and should be re-run before submission.
+The final verification commands are listed here and should be re-run before submission.
 
 ## Limitations
 

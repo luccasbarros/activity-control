@@ -79,7 +79,6 @@
 - Create: `docs/architecture.md`
 - Modify: `README.md`
 - Modify: `docs/ai-skill-usage.md`
-- Modify: `docs/agent-submission.md`
 - Modify: `docs/superpowers/plans/2026-06-09-product-maturity.md`
 
 - [x] Add concise architecture documentation.
@@ -136,7 +135,6 @@
 - Modify: `docs/sdd-spec.md`
 - Modify: `docs/architecture.md`
 - Modify: `docs/ai-skill-usage.md`
-- Modify: `docs/agent-submission.md`
 - Modify: `package.json`
 
 - [x] Record the UI reference direction and responsive checklist.
