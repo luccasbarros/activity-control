@@ -28,7 +28,7 @@ The dashboard is server-rendered. Filters are encoded as URL query parameters, p
 | Feedback | `src/lib/notifications.ts`, `src/components/toast.tsx` | Convert action results into visible confirmation or error toasts. |
 | Persistence | `prisma/schema.prisma`, `src/lib/db.ts` | Define SQLite schema, Prisma models, indexes, and client access. |
 | Activity history | `src/lib/activity-change.ts`, `src/components/change-history.tsx` | Summarize create/update/delete events and render recent changes. |
-| Verification | `src/lib/*.test.ts` | Cover logic that is easy to regress as the product evolves. |
+| Verification | `src/lib/*.test.ts`, `tests/e2e/responsive.spec.ts` | Cover logic that is easy to regress and browser-level responsive behavior. |
 
 ## Data Model Shape
 
@@ -105,14 +105,15 @@ Automated tests focus on logic that can silently break:
 - password hashing;
 - session signing and tamper rejection;
 - activity update summary generation.
+- responsive browser behavior for login, dashboard sections, inline editing, pagination, toasts, and horizontal overflow.
 
-Manual verification should cover the browser flow: login, create, edit, delete, filter, and recent changes.
+Manual verification should still cover full business flows that intentionally mutate data: create, edit, delete, filter, and recent changes.
 
 ## Future Paths
 
 - Replace local auth with OAuth or SSO.
 - Add role-based permissions for admin/member workflows.
-- Add Playwright tests for browser-level CRUD and auth flows.
+- Expand Playwright coverage from responsive smoke checks into full browser-level CRUD and auth edge cases.
 - Add full-text search for larger activity volume.
 - Move to PostgreSQL if multi-user concurrency becomes important.
 - Add field-level audit diffs if compliance requirements appear.

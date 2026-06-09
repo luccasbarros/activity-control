@@ -28,9 +28,13 @@ Seeded login:
 ```bash
 npm run seed
 npm test
+npx playwright install chromium
+npm run test:e2e
 npm run lint
 npm run build
 ```
+
+Run `npx playwright install chromium` once before `npm run test:e2e` when the local machine does not already have the Playwright browser installed.
 
 `npx prisma migrate dev` also runs the seed command through `prisma.config.ts`.
 
@@ -62,6 +66,7 @@ For local HTTP access, `docker-compose.yml` sets `AUTH_COOKIE_SECURE=false`. A r
 - Seed representative local data
 - Dashboard metrics for total, pending, in-progress, blocked, and done activities
 - Automated tests for validation, filters, pagination, navigation helpers, notifications, password hashing, session tokens, and change summaries
+- Browser-level responsive checks with Playwright for login, dashboard, inline editing, pagination, and toasts
 - Optional Docker runtime
 
 ## Specification-Driven Artifacts
@@ -114,6 +119,8 @@ npx prisma migrate reset --force
 npx prisma migrate dev
 npx tsc --noEmit
 npm test
+npx playwright install chromium
+npm run test:e2e
 npm run lint
 npm run build
 docker compose config
@@ -128,12 +135,13 @@ Runtime smoke check:
 - `/login` returns 200 and displays the seeded demo account.
 - authenticated list pages render pagination state;
 - confirmation toasts render from action query messages.
+- Playwright responsive checks passed on desktop, tablet, and mobile viewports with no horizontal overflow.
 
 ## AI / Skill Usage
 
 AI assistance was used through a skill-guided workflow. The primary documented skill was `superpowers:writing-plans`, used to convert the committed specification into an implementation plan with files, tasks, test strategy, and commit boundaries.
 
-Supporting skill-guided activities included `superpowers:test-driven-development` for validation/filter tests and `superpowers:verification-before-completion` for final checks.
+Supporting skill-guided activities included `superpowers:test-driven-development` for validation/filter tests, `build-web-apps:frontend-testing-debugging` for responsive browser validation, and `superpowers:verification-before-completion` for final checks.
 
 The skill-assisted workflow supported:
 
@@ -141,6 +149,7 @@ The skill-assisted workflow supported:
 - planning the implementation in small commits;
 - generating the first version of React components and Prisma schema;
 - creating validation, filter, session, password, and change-summary tests;
+- adding Playwright responsive smoke coverage for the main frontend flows;
 - adding a small authentication boundary and change-history model;
 - reviewing documentation, Docker support, and trade-offs.
 

@@ -108,7 +108,7 @@ Destructive delete actions must require explicit confirmation before submission.
 - The database is SQLite.
 - Prisma is used as the ORM.
 - The code is written in TypeScript.
-- The interface is responsive enough for desktop and narrow screens.
+- The interface is responsive across desktop, tablet, and mobile widths without horizontal overflow in the main flows.
 - Validation must prevent empty required fields and invalid enum values.
 - The app should favor clear component boundaries over premature abstraction.
 - Documentation must explain AI/Skill usage, impact, and human review.
@@ -208,6 +208,7 @@ ASCII labels are used in source code and database values for portability. User-f
 - A user can move between paginated activity pages without losing filters.
 - A user receives confirmation feedback after successful create, update, and delete actions.
 - A user must explicitly confirm delete before the destructive action is submitted.
+- Login, dashboard, inline editing, pagination, and toast feedback remain usable on desktop, tablet, and mobile widths.
 - Invalid form submissions are rejected with actionable messages.
 - Prisma schema and migration are committed.
 - README documents setup, architecture, AI/Skill usage, and validation.
@@ -225,9 +226,9 @@ ASCII labels are used in source code and database values for portability. User-f
 
 - Use shared TypeScript/Zod schemas for form validation.
 - Use Prisma enums for persistence-level constraints.
-- Use automated tests for validation and filtering helpers.
-- Use manual browser checks for the create, edit, delete, and filter flows.
-- Use `npm run lint`, `npm test`, and `npm run build` before final submission.
+- Use automated tests for validation, filtering helpers, pagination helpers, notifications, session helpers, and responsive browser behavior.
+- Use manual browser checks for full mutating flows such as create, edit, delete, and filter interactions.
+- Use `npm run lint`, `npm test`, `npm run test:e2e`, and `npm run build` before final submission.
 
 ## 10. Product-Maturity Enhancements
 
@@ -291,7 +292,7 @@ The repository should include a concise architecture document explaining:
 - SQLite with Prisma.
 - Seed data.
 - Dashboard metrics.
-- Basic automated tests around validation and filtering.
+- Automated tests around validation, filtering, pagination, notifications, auth/session helpers, change summaries, and responsive browser behavior.
 - Local authentication gate.
 - Lightweight activity change history.
 - Optional Docker support.
@@ -316,6 +317,7 @@ The repository should include a concise architecture document explaining:
 | CRUD | `src/app/actions.ts` |
 | UI flows | `src/app/page.tsx`, `src/components/*` |
 | Feedback | `src/lib/notifications.ts`, `src/components/toast.tsx` |
+| Responsive browser checks | `playwright.config.ts`, `tests/e2e/responsive.spec.ts` |
 | Metrics | `src/lib/metrics.ts`, dashboard cards |
 | Authentication | `src/lib/password.ts`, `src/lib/session.ts`, `src/lib/auth.ts`, `src/app/login/*` |
 | Change history | `prisma/schema.prisma`, `src/lib/activity-change.ts`, `src/components/change-history.tsx` |
