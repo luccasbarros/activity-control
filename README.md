@@ -74,7 +74,7 @@ For local HTTP access, `docker-compose.yml` sets `AUTH_COOKIE_SECURE=false`. A r
 - Structured server logs for auth and activity mutations
 - Product version surfaced in the application shell
 - Automated tests for validation, filters, pagination, navigation helpers, notifications, password hashing, session tokens, and change summaries
-- Browser-level responsive checks with Playwright for login, dashboard navigation, edit modal, pagination, and toasts
+- Browser-level Playwright checks for auth/logout, create/edit/delete, filters, history, security headers, responsive routes, pagination, and toasts
 - GitHub Actions CI for typecheck, tests, lint, build, migrations, seed, and Playwright
 - Optional Docker runtime
 
@@ -150,6 +150,7 @@ Runtime smoke check:
 - `/login` returns 200 and displays the seeded demo account.
 - authenticated list pages render pagination state;
 - confirmation toasts render from action query messages.
+- core Playwright flows cover auth/logout, create/edit/delete, filter combinations, history evidence, and security headers.
 - Playwright responsive checks passed on desktop, tablet, and mobile viewports with no horizontal overflow across dashboard, activities, create, and history routes.
 - Visual screenshots were reviewed for desktop and mobile shell behavior, including sidebar, top account menu, mobile bottom navigation, dashboard charts, and activity cards.
 
@@ -167,7 +168,7 @@ The skill-assisted workflow supported:
 - planning the implementation in small commits;
 - generating the first version of React components and Prisma schema;
 - creating validation, filter, session, password, and change-summary tests;
-- adding Playwright responsive smoke coverage for the main frontend routes and edit modal;
+- adding Playwright coverage for responsive routes and core user flows;
 - adding a small authentication boundary and change-history model;
 - reviewing documentation, Docker support, CI, local observability, and trade-offs.
 - documenting a repeatable security review checklist for the project.

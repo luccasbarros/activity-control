@@ -26,6 +26,7 @@ The skill workflow helped transform the challenge prompt into a committed specif
 | Auth helper design | `superpowers:test-driven-development` | `src/lib/password.ts`, `src/lib/session.ts`, related tests |
 | Activity history design | `superpowers:test-driven-development` | `src/lib/activity-change.ts`, `src/components/change-history.tsx` |
 | Responsive frontend validation | `build-web-apps:frontend-testing-debugging` | `docs/design/*`, `src/components/app-shell.tsx`, `src/components/app-navigation.tsx`, `playwright.config.ts`, `tests/e2e/responsive.spec.ts` |
+| Core browser flows | `superpowers:test-driven-development` | `tests/e2e/flows.spec.ts` |
 | UI generation | React/Next.js component assistance | `src/components/*`, `src/app/(app)/*` |
 | Docker runtime | implementation planning assistance | `Dockerfile`, `.dockerignore`, `docker-compose.yml` |
 | CI and versioning | implementation planning assistance | `.github/workflows/ci.yml`, `package.json` version scripts |
@@ -62,7 +63,7 @@ Review-owned decisions:
 - `docs/superpowers/plans/2026-06-09-product-maturity.md` records the later product-maturity enhancements and completion checks.
 - Tests were written for validation and filters before the helper implementation.
 - Additional tests cover password hashing, session token verification, pagination, navigation helpers, notifications, and activity change summaries.
-- Playwright e2e coverage checks login, route navigation, edit modal, pagination, toast feedback, and horizontal overflow across desktop, tablet, and mobile widths.
+- Playwright e2e coverage checks auth/logout, create/edit/delete, filter combinations, history evidence, security headers, route navigation, pagination, toast feedback, and horizontal overflow across desktop, tablet, and mobile widths.
 - `docs/design/reference.md`, `docs/design/ui-decisions.md`, and `docs/design/responsive-checklist.md` record the UI direction and responsive acceptance checks.
 - `docs/skills/activity-control-security-review/` records the security review workflow and checklist used for the project.
 - `docs/security-review.md` records the security findings, mitigations, and residual trade-offs.
