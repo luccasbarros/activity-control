@@ -1,0 +1,149 @@
+import { type Activity } from "@prisma/client";
+import {
+  categoryOptions,
+  priorityOptions,
+  statusOptions,
+} from "@/lib/options";
+
+type ActivityFormProps = {
+  action: (formData: FormData) => void | Promise<void>;
+  defaultValues?: Partial<Activity>;
+  submitLabel: string;
+  compact?: boolean;
+};
+
+export function ActivityForm({
+  action,
+  defaultValues,
+  submitLabel,
+  compact = false,
+}: ActivityFormProps) {
+  return (
+    <form action={action} className={compact ? "space-y-4" : "space-y-5"}>
+      <div
+        className={
+          compact
+            ? "grid gap-4 md:grid-cols-2"
+            : "grid gap-4 md:grid-cols-[1fr_1fr] lg:grid-cols-[1.2fr_0.8fr_0.8fr]"
+        }
+      >
+        <Field label="Title">
+          <input
+            name="title"
+            defaultValue={defaultValues?.title ?? ""}
+            required
+            minLength={3}
+            maxLength={120}
+            className="field"
+            placeholder="Review onboarding flow"
+          />
+        </Field>
+
+        <Field label="Team">
+          <input
+            name="team"
+            defaultValue={defaultValues?.team ?? ""}
+            required
+            minLength={2}
+            maxLength={80}
+            className="field"
+            placeholder="Platform"
+          />
+        </Field>
+
+        <Field label="Assignee">
+          <input
+            name="assignee"
+            defaultValue={defaultValues?.assignee ?? ""}
+            required
+            minLength={2}
+            maxLength={80}
+            className="field"
+            placeholder="Alex Morgan"
+          />
+        </Field>
+      </div>
+
+      <Field label="Description">
+        <textarea
+          name="description"
+          defaultValue={defaultValues?.description ?? ""}
+          required
+          minLength={3}
+          maxLength={1000}
+          rows={compact ? 3 : 4}
+          className="field resize-y"
+          placeholder="Describe the activity, context, and expected outcome."
+        />
+      </Field>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <Field label="Priority">
+          <select
+            name="priority"
+            defaultValue={defaultValues?.priority ?? "MEDIUM"}
+            className="field"
+            required
+          >
+            {priorityOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <Field label="Category">
+          <select
+            name="category"
+            defaultValue={defaultValues?.category ?? "FEATURE"}
+            className="field"
+            required
+          >
+            {categoryOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <Field label="Status">
+          <select
+            name="status"
+            defaultValue={defaultValues?.status ?? "PENDING"}
+            className="field"
+            required
+          >
+            {statusOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+      </div>
+
+      <div className="flex justify-end">
+        <button type="submit" className="primary-button">
+          {submitLabel}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="grid gap-2 text-sm font-medium text-ink">
+      <span>{label}</span>
+      {children}
+    </label>
+  );
+}
