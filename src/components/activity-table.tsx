@@ -1,6 +1,5 @@
 import { type Activity, ActivityStatus } from "@prisma/client";
 import { deleteActivityAction, updateActivityAction } from "@/app/actions";
-import { Trash2 } from "lucide-react";
 import { formatDateTime } from "@/lib/format";
 import { UI_COPY } from "@/lib/copy";
 import {
@@ -9,8 +8,8 @@ import {
   priorityOptions,
   statusOptions,
 } from "@/lib/options";
+import { ActivityDeleteDialog } from "./activity-delete-dialog";
 import { ActivityEditDialog } from "./activity-edit-dialog";
-import { ConfirmSubmitButton } from "./confirm-submit-button";
 
 type ActivityTableProps = {
   activities: Activity[];
@@ -76,16 +75,11 @@ export function ActivityTable({ activities, returnTo }: ActivityTableProps) {
               }}
               returnTo={returnTo}
             />
-            <form action={deleteActivityAction.bind(null, activity.id)}>
-              <input name="returnTo" type="hidden" value={returnTo} />
-              <ConfirmSubmitButton
-                className="danger-button"
-                message={`Delete "${activity.title}"? This action cannot be undone.`}
-              >
-                <Trash2 aria-hidden="true" size={15} />
-                {UI_COPY.actions.delete}
-              </ConfirmSubmitButton>
-            </form>
+            <ActivityDeleteDialog
+              action={deleteActivityAction.bind(null, activity.id)}
+              activityTitle={activity.title}
+              returnTo={returnTo}
+            />
           </div>
         </article>
       ))}

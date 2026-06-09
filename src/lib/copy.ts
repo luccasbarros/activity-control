@@ -5,16 +5,21 @@ export const UI_COPY = {
   },
   actions: {
     apply: "Apply",
+    cancel: "Cancel",
     clear: "Clear",
     createActivity: "Create activity",
     delete: "Delete",
+    deleteActivity: "Delete activity",
     edit: "Edit",
     newActivity: "New activity",
     saveChanges: "Save changes",
     set: "Set",
   },
   activityDelete: {
+    descriptionPrefix:
+      "This will permanently delete the activity and remove it from the active list.",
     confirmationSuffix: "This action cannot be undone.",
+    title: "Delete activity",
   },
   activities: {
     description: "Filter, review, edit, and delete internal activities.",
@@ -33,6 +38,7 @@ export const UI_COPY = {
     title: "Dashboard",
   },
   dialog: {
+    closeDelete: "Close delete dialog",
     closeEdit: "Close edit dialog",
     editActivity: "Edit activity",
   },

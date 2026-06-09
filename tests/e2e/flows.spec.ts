@@ -94,18 +94,28 @@ test.describe("activity control core flows", () => {
     await expect(page.getByText(updatedTitle)).toBeVisible();
 
     const updatedCard = page.locator("article").filter({ hasText: updatedTitle });
-    page.once("dialog", async (confirmation) => {
-      expect(confirmation.message()).toContain(updatedTitle);
+    let nativeDialogOpened = false;
+    page.on("dialog", async (confirmation) => {
+      nativeDialogOpened = true;
       await confirmation.dismiss();
     });
+
     await updatedCard.getByRole("button", { name: "Delete" }).click();
+    const deleteDialog = page.getByRole("dialog", { name: "Delete activity" });
+    await expect(deleteDialog).toBeVisible();
+    await expect(deleteDialog).toContainText(updatedTitle);
+    await expect(deleteDialog).toContainText("This action cannot be undone.");
+    expect(nativeDialogOpened).toBe(false);
+
+    await deleteDialog.getByRole("button", { name: "Cancel" }).click();
+    await expect(deleteDialog).toBeHidden();
     await expect(updatedCard).toBeVisible();
 
-    page.once("dialog", async (confirmation) => {
-      expect(confirmation.message()).toContain(updatedTitle);
-      await confirmation.accept();
-    });
     await updatedCard.getByRole("button", { name: "Delete" }).click();
+    await page
+      .getByRole("dialog", { name: "Delete activity" })
+      .getByRole("button", { name: "Delete activity" })
+      .click();
 
     await expect(page.getByRole("status")).toContainText("Activity deleted");
     await expect(page.getByText(updatedTitle)).toBeHidden();
@@ -155,10 +165,11 @@ test.describe("activity control core flows", () => {
     await expect(filteredCard.getByText("Critical")).toBeVisible();
     await expect(filteredCard.getByText("Blocked")).toBeVisible();
 
-    page.once("dialog", async (confirmation) => {
-      await confirmation.accept();
-    });
     await filteredCard.getByRole("button", { name: "Delete" }).click();
+    await page
+      .getByRole("dialog", { name: "Delete activity" })
+      .getByRole("button", { name: "Delete activity" })
+      .click();
     await expect(page.getByRole("status")).toContainText("Activity deleted");
   });
 
