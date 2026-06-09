@@ -2,20 +2,27 @@
 
 ## Summary
 
-This project used an AI coding assistant with a skill-guided workflow to support Specification-Driven Development / Specification-Driven Tooling. The skill workflow helped transform the challenge prompt into a committed specification, implementation plan, Prisma model, validation tests, CRUD UI, and documentation.
+This project used an AI coding assistant with a skill-guided workflow to support Specification-Driven Development / Specification-Driven Tooling. The primary documented skill was `superpowers:writing-plans`, used to transform the committed specification into a concrete implementation plan.
+
+Supporting skills were used for focused activities:
+
+- `superpowers:test-driven-development` for validation/filter tests.
+- `superpowers:verification-before-completion` for final evidence before completion claims.
+
+The skill workflow helped transform the challenge prompt into a committed specification, implementation plan, Prisma model, validation tests, CRUD UI, and documentation.
 
 ## Skill-Guided Activities
 
 | Activity | Assisted By | Output |
 | --- | --- | --- |
-| Requirement structuring | SDD/specification workflow | `docs/sdd-spec.md` |
-| Implementation breakdown | planning workflow | `docs/superpowers/plans/2026-06-09-activity-control.md` |
+| Requirement structuring | Specification workflow assisted by AI | `docs/sdd-spec.md` |
+| Implementation breakdown | `superpowers:writing-plans` | `docs/superpowers/plans/2026-06-09-activity-control.md` |
 | Data model drafting | Prisma/schema assistance | `prisma/schema.prisma` |
-| Validation design | TDD/validation assistance | `src/lib/validation.ts`, `src/lib/validation.test.ts` |
-| Filter design | TDD/filter assistance | `src/lib/filters.ts`, `src/lib/filters.test.ts` |
+| Validation design | `superpowers:test-driven-development` | `src/lib/validation.ts`, `src/lib/validation.test.ts` |
+| Filter design | `superpowers:test-driven-development` | `src/lib/filters.ts`, `src/lib/filters.test.ts` |
 | UI generation | React/Next.js component assistance | `src/components/*`, `src/app/page.tsx` |
-| Documentation | documentation assistance | `README.md`, `docs/technical-rationale.md` |
-| Verification discipline | verification workflow | repeated `npm test`, `npm run lint`, `npm run build`, Prisma commands |
+| Documentation | documentation assistance | `README.md`, `docs/ai-skill-usage.md` |
+| Verification discipline | `superpowers:verification-before-completion` | repeated `npm test`, `npm run lint`, `npm run build`, Prisma commands |
 
 ## Human Review Boundaries
 
@@ -38,6 +45,7 @@ Human-owned decisions:
 - Tests were written for validation and filters before the helper implementation.
 - `docs/agent-submission.md` records continuation state so project memory does not depend only on chat context.
 - Commit history shows the progression from specification to implementation.
+- The implementation plan now marks completed tasks with checked boxes, making the spec-to-code progression easier to audit.
 
 ## Verification Evidence
 

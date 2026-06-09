@@ -49,7 +49,7 @@ export default async function Home({ searchParams }: PageProps) {
       <header>
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate">
-            SDD Activity Control
+            Activity Control
           </p>
           <h1 className="mt-3 text-4xl font-semibold text-ink">
             Internal activity control

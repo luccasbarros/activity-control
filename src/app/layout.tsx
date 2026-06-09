@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Activity Control SDD",
+  title: "Activity Control",
   description: "Local activity control system built with Next.js, Prisma, and SQLite.",
 };
 

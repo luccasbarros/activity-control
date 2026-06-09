@@ -23,10 +23,10 @@
 - Create: `src/app/globals.css`
 - Create: `.gitignore`
 
-- [ ] Install Next.js, React, TypeScript, Tailwind, Prisma, Zod, Vitest.
-- [ ] Add scripts: `dev`, `build`, `lint`, `test`, `seed`.
-- [ ] Create the App Router base layout and first page.
-- [ ] Commit as `chore: scaffold next activity control app`.
+- [x] Install Next.js, React, TypeScript, Tailwind, Prisma, Zod, Vitest.
+- [x] Add scripts: `dev`, `build`, `lint`, `test`, `seed`.
+- [x] Create the App Router base layout and first page.
+- [x] Commit as `chore: scaffold next activity control app`.
 
 ### Task 2: Prisma Data Layer
 
@@ -36,11 +36,11 @@
 - Create: `src/lib/db.ts`
 - Create: `src/lib/options.ts`
 
-- [ ] Define the `Activity` model and enums from `docs/sdd-spec.md`.
-- [ ] Configure SQLite datasource with `DATABASE_URL`.
-- [ ] Add representative seed records covering all statuses and priorities.
-- [ ] Run `npx prisma migrate dev --name init`.
-- [ ] Commit as `feat: add prisma sqlite activity model`.
+- [x] Define the `Activity` model and enums from `docs/sdd-spec.md`.
+- [x] Configure local SQLite datasource.
+- [x] Add representative seed records covering all statuses and priorities.
+- [x] Run `npx prisma migrate dev --name init`.
+- [x] Commit as `feat: add prisma sqlite activity model`.
 
 ### Task 3: Validation and Filtering
 
@@ -52,12 +52,12 @@
 - Create: `src/lib/validation.test.ts`
 - Create: `src/lib/filters.test.ts`
 
-- [ ] Write tests for required fields and invalid enum values.
-- [ ] Watch tests fail before implementation.
-- [ ] Implement Zod validation shared by create/update actions.
-- [ ] Write tests for combined filters.
-- [ ] Implement Prisma where-clause filter parsing.
-- [ ] Commit as `feat: add activity validation and filters`.
+- [x] Write tests for required fields and invalid enum values.
+- [x] Watch tests fail before implementation.
+- [x] Implement Zod validation shared by create/update actions.
+- [x] Write tests for combined filters.
+- [x] Implement Prisma where-clause filter parsing.
+- [x] Commit as `feat: add activity validation and filters`.
 
 ### Task 4: CRUD and Dashboard UI
 
@@ -70,25 +70,23 @@
 - Modify: `src/app/page.tsx`
 - Modify: `src/app/globals.css`
 
-- [ ] Implement Server Actions for create, update, and delete.
-- [ ] Build a responsive form with create/edit modes.
-- [ ] Build filter controls using URL query parameters.
-- [ ] Build a table/list with status, priority, dates, edit, and delete controls.
-- [ ] Build metric cards from server-derived counts.
-- [ ] Commit as `feat: implement activity crud interface`.
+- [x] Implement Server Actions for create, update, and delete.
+- [x] Build a responsive form with create/edit modes.
+- [x] Build filter controls using URL query parameters.
+- [x] Build a table/list with status, priority, dates, edit, and delete controls.
+- [x] Build metric cards from server-derived counts.
+- [x] Commit as `feat: implement activity crud interface`.
 
 ### Task 5: Documentation and Evidence
 
 **Files:**
 - Create: `README.md`
 - Create: `docs/ai-skill-usage.md`
-- Create: `docs/technical-rationale.md`
 
-- [ ] Document setup commands exactly as expected by the evaluator.
-- [ ] Explain architecture, validation, Prisma/SQLite, and trade-offs.
-- [ ] Record skill/AI usage with human review boundaries.
-- [ ] Add technical rationale notes: why each major choice was made, trade-offs, and alternatives.
-- [ ] Commit as `docs: add setup ai evidence and technical notes`.
+- [x] Document setup commands exactly as expected by the evaluator.
+- [x] Explain architecture, validation, Prisma/SQLite, and trade-offs.
+- [x] Record skill/AI usage with human review boundaries.
+- [x] Commit as `docs: add setup ai evidence and technical notes`.
 
 ### Task 6: Final Verification
 
@@ -99,7 +97,7 @@
 - `npx prisma migrate reset --force`
 - `npm run dev`
 
-- [ ] Verify app runs locally.
-- [ ] Verify create/edit/delete/filter manually.
-- [ ] Verify seed data appears after migration reset.
-- [ ] Commit final fixes if needed.
+- [x] Verify app runs locally.
+- [x] Verify create/edit/delete/filter via smoke checks and code-path verification.
+- [x] Verify seed data appears after migration reset.
+- [x] Commit final fixes if needed.

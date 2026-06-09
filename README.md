@@ -1,8 +1,10 @@
-# Activity Control SDD
+# Activity Control
 
 Local activity control system built with Next.js, React, TypeScript, Prisma, and SQLite.
 
-The project follows a Specification-Driven Development / Specification-Driven Tooling flow: the specification was written first, committed, then transformed into schema, validation, CRUD flows, filters, metrics, tests, and documentation.
+The project was built with a Specification-Driven Development / Specification-Driven Tooling flow: the specification was written first, committed, then transformed into schema, validation, CRUD flows, filters, metrics, tests, and documentation.
+
+Product name: Activity Control. SDD/SDT is the delivery method used to design, implement, and verify the application.
 
 ## Run Locally
 
@@ -40,12 +42,11 @@ npm run build
 - Dashboard metrics for total, pending, in-progress, blocked, and done activities
 - Automated tests for validation and filter behavior
 
-## SDD/SDT Artifacts
+## Specification-Driven Artifacts
 
 - Specification: `docs/sdd-spec.md`
 - Implementation plan: `docs/superpowers/plans/2026-06-09-activity-control.md`
 - AI/Skill evidence: `docs/ai-skill-usage.md`
-- Technical notes and trade-offs: `docs/technical-rationale.md`
 - Resume-safe submission for continuation: `docs/agent-submission.md`
 
 ## Architecture
@@ -73,7 +74,11 @@ Prisma enums and the SQLite schema provide the persistence boundary. Tests cover
 
 ## AI / Skill Usage
 
-AI assistance was used through a skill-guided workflow for:
+AI assistance was used through a skill-guided workflow. The primary documented skill was `superpowers:writing-plans`, used to convert the committed specification into an implementation plan with files, tasks, test strategy, and commit boundaries.
+
+Supporting skill-guided activities included `superpowers:test-driven-development` for validation/filter tests and `superpowers:verification-before-completion` for final checks.
+
+The skill-assisted workflow supported:
 
 - converting the challenge prompt into a Markdown specification;
 - planning the implementation in small commits;
