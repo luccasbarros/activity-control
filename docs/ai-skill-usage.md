@@ -30,7 +30,7 @@ The skill workflow helped transform the challenge prompt into a committed specif
 | Docker runtime | implementation planning assistance | `Dockerfile`, `.dockerignore`, `docker-compose.yml` |
 | CI and versioning | implementation planning assistance | `.github/workflows/ci.yml`, `package.json` version scripts |
 | Local observability | implementation planning assistance | `src/lib/logger.ts`, structured log event constants |
-| Security review workflow | `activity-control-security-review` | `docs/skills/activity-control-security-review/*` |
+| Security review workflow | `activity-control-security-review` | `docs/skills/activity-control-security-review/*`, `docs/security-review.md` |
 | Documentation | documentation assistance | `README.md`, `docs/architecture.md`, `docs/ai-skill-usage.md`, `docs/design/*` |
 | Verification discipline | `superpowers:verification-before-completion` | repeated `npm test`, `npm run lint`, `npm run build`, Prisma commands, Playwright checks |
 
@@ -65,6 +65,7 @@ Review-owned decisions:
 - Playwright e2e coverage checks login, route navigation, edit modal, pagination, toast feedback, and horizontal overflow across desktop, tablet, and mobile widths.
 - `docs/design/reference.md`, `docs/design/ui-decisions.md`, and `docs/design/responsive-checklist.md` record the UI direction and responsive acceptance checks.
 - `docs/skills/activity-control-security-review/` records the security review workflow and checklist used for the project.
+- `docs/security-review.md` records the security findings, mitigations, and residual trade-offs.
 - `.github/workflows/ci.yml` records the repeatable repository verification flow.
 - Commit history shows the progression from specification to implementation.
 - The implementation plan now marks completed tasks with checked boxes, making the spec-to-code progression easier to audit.

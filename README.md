@@ -85,6 +85,7 @@ For local HTTP access, `docker-compose.yml` sets `AUTH_COOKIE_SECURE=false`. A r
 - Product-maturity plan: `docs/superpowers/plans/2026-06-09-product-maturity.md`
 - Architecture notes: `docs/architecture.md`
 - AI/Skill evidence: `docs/ai-skill-usage.md`
+- Security review: `docs/security-review.md`
 
 ## Architecture
 
@@ -158,7 +159,7 @@ AI assistance was used through a skill-guided workflow. The primary documented s
 
 Supporting skill-guided activities included `superpowers:test-driven-development` for validation/filter tests, `build-web-apps:frontend-testing-debugging` for responsive browser validation, and `superpowers:verification-before-completion` for final checks.
 
-A sanitized project-specific security review skill is included at `docs/skills/activity-control-security-review/`. It documents the repeatable review workflow used for auth, sessions, Server Actions, validation, logging, Docker, CI, dependency audit, and public-repository hygiene.
+A sanitized project-specific security review skill is included at `docs/skills/activity-control-security-review/`. It documents the repeatable review workflow used for auth, sessions, Server Actions, validation, logging, Docker, CI, dependency audit, and public-repository hygiene. The resulting review is recorded in `docs/security-review.md`.
 
 The skill-assisted workflow supported:
 

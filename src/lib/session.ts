@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { SESSION_MAX_AGE_SECONDS } from "./constants";
 
 export const SESSION_COOKIE_NAME = "activity_control_session";
 
@@ -6,12 +7,25 @@ export type SessionPayload = {
   userId: string;
   email: string;
   name: string;
+  expiresAt: number;
 };
 
-const fallbackSecret = "local-activity-control-demo-secret";
+const demoSessionSecret = "local-activity-control-demo-secret";
 
 export function getSessionSecret() {
-  return process.env.AUTH_SECRET || fallbackSecret;
+  if (process.env.AUTH_SECRET) {
+    return process.env.AUTH_SECRET;
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("AUTH_SECRET must be set in production.");
+  }
+
+  return demoSessionSecret;
+}
+
+export function getSessionExpiresAt(now = Date.now()) {
+  return now + SESSION_MAX_AGE_SECONDS * 1000;
 }
 
 function signatureFor(payload: string, secret: string) {
@@ -63,8 +77,14 @@ export function verifySessionToken(
     if (
       typeof parsed.userId !== "string" ||
       typeof parsed.email !== "string" ||
-      typeof parsed.name !== "string"
+      typeof parsed.name !== "string" ||
+      typeof parsed.expiresAt !== "number" ||
+      !Number.isFinite(parsed.expiresAt)
     ) {
+      return null;
+    }
+
+    if (Date.now() > parsed.expiresAt) {
       return null;
     }
 

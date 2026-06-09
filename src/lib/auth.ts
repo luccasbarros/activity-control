@@ -3,17 +3,17 @@ import { redirect } from "next/navigation";
 import { prisma } from "./db";
 import {
   SESSION_COOKIE_NAME,
+  getSessionExpiresAt,
   signSessionToken,
   verifySessionToken,
 } from "./session";
+import { SESSION_MAX_AGE_SECONDS } from "./constants";
 
 export type CurrentUser = {
   id: string;
   email: string;
   name: string;
 };
-
-const cookieMaxAge = 60 * 60 * 8;
 
 function shouldUseSecureCookie() {
   if (process.env.AUTH_COOKIE_SECURE) {
@@ -58,13 +58,14 @@ export async function setSessionCookie(user: CurrentUser) {
     userId: user.id,
     email: user.email,
     name: user.name,
+    expiresAt: getSessionExpiresAt(),
   });
 
   cookieStore.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
     secure: shouldUseSecureCookie(),
-    maxAge: cookieMaxAge,
+    maxAge: SESSION_MAX_AGE_SECONDS,
     path: "/",
   });
 }
@@ -72,5 +73,11 @@ export async function setSessionCookie(user: CurrentUser) {
 export async function clearSessionCookie() {
   const cookieStore = await cookies();
 
-  cookieStore.delete(SESSION_COOKIE_NAME);
+  cookieStore.set(SESSION_COOKIE_NAME, "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: shouldUseSecureCookie(),
+    maxAge: 0,
+    path: "/",
+  });
 }

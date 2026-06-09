@@ -57,6 +57,8 @@ export const LOG_FAILURE_REASONS = {
   missingCredentials: "missing_credentials",
 } as const;
 
+export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
+
 export const ACTIVITY_CHANGE_SUMMARIES = {
   created: "Created activity.",
   deleted: "Deleted activity.",

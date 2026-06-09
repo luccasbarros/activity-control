@@ -22,8 +22,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-COPY --from=builder /app ./
+COPY --from=builder --chown=node:node /app ./
 
 EXPOSE 3000
+
+USER node
 
 CMD ["sh", "-c", "npx prisma migrate deploy && npm run seed && npm run start"]
