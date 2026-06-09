@@ -5,6 +5,7 @@ import { AppHeader } from "@/components/app-header";
 import { ChangeHistory } from "@/components/change-history";
 import { FilterBar } from "@/components/filter-bar";
 import { PaginationControls } from "@/components/pagination-controls";
+import { SectionNavigation } from "@/components/section-navigation";
 import { Toast } from "@/components/toast";
 import { requireCurrentUser } from "@/lib/auth";
 import { MetricCards } from "@/components/metric-cards";
@@ -77,11 +78,13 @@ export default async function Home({ searchParams }: PageProps) {
 
       <AppHeader user={currentUser} />
 
+      <SectionNavigation />
+
       <MetricCards metrics={metrics} />
 
       <ChangeHistory changes={recentChanges} />
 
-      <section className="panel">
+      <section className="panel scroll-mt-28" id="create-activity">
         <div className="mb-5">
           <h2 className="text-2xl font-semibold text-ink">Create activity</h2>
           <p className="mt-2 text-sm leading-6 text-slate">
@@ -96,7 +99,7 @@ export default async function Home({ searchParams }: PageProps) {
         />
       </section>
 
-      <section className="grid gap-4">
+      <section className="grid scroll-mt-28 gap-4" id="activity-list">
         <div>
           <h2 className="text-2xl font-semibold text-ink">Activity list</h2>
           <p className="mt-2 text-sm leading-6 text-slate">

@@ -14,7 +14,7 @@ const changeLabels = {
 export function ChangeHistory({ changes }: ChangeHistoryProps) {
   if (changes.length === 0) {
     return (
-      <section className="panel">
+      <section className="panel scroll-mt-28" id="recent-changes">
         <h2 className="text-2xl font-semibold text-ink">Recent changes</h2>
         <p className="mt-2 text-sm leading-6 text-slate">
           Changes will appear here after activity operations.
@@ -24,7 +24,7 @@ export function ChangeHistory({ changes }: ChangeHistoryProps) {
   }
 
   return (
-    <section className="panel">
+    <section className="panel scroll-mt-28" id="recent-changes">
       <h2 className="text-2xl font-semibold text-ink">Recent changes</h2>
       <ol className="mt-5 grid gap-3">
         {changes.map((change) => (

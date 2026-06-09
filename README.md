@@ -61,12 +61,13 @@ For local HTTP access, `docker-compose.yml` sets `AUTH_COOKIE_SECURE=false`. A r
 - Manage status: Pending, In progress, Done, Blocked
 - Show created and updated timestamps
 - Record recent create, update, and delete changes
+- Navigate directly between dashboard sections
 - Show confirmation toasts after create, update, delete, and validation errors
 - Confirm destructive delete actions before submitting
 - Seed representative local data
 - Dashboard metrics for total, pending, in-progress, blocked, and done activities
 - Automated tests for validation, filters, pagination, navigation helpers, notifications, password hashing, session tokens, and change summaries
-- Browser-level responsive checks with Playwright for login, dashboard, inline editing, pagination, and toasts
+- Browser-level responsive checks with Playwright for login, dashboard navigation, inline editing, pagination, and toasts
 - Optional Docker runtime
 
 ## Specification-Driven Artifacts
@@ -91,6 +92,7 @@ The app uses the Next.js App Router with server-side data loading and Server Act
 - `src/lib/navigation.ts`: safe return paths and query-message helpers.
 - `src/lib/notifications.ts`: toast message mapping.
 - `src/lib/metrics.ts`: dashboard metric calculation.
+- `src/components/section-navigation.tsx`: in-page navigation between dashboard sections.
 - `src/lib/password.ts`: PBKDF2 password hashing for the seeded local account.
 - `src/lib/session.ts`: signed session-token helper.
 - `src/lib/auth.ts`: current-user lookup, session cookie, and route protection.
@@ -135,7 +137,7 @@ Runtime smoke check:
 - `/login` returns 200 and displays the seeded demo account.
 - authenticated list pages render pagination state;
 - confirmation toasts render from action query messages.
-- Playwright responsive checks passed on desktop, tablet, and mobile viewports with no horizontal overflow.
+- Playwright responsive checks passed on desktop, tablet, and mobile viewports with no horizontal overflow, including section navigation on mobile.
 
 ## AI / Skill Usage
 
@@ -149,7 +151,7 @@ The skill-assisted workflow supported:
 - planning the implementation in small commits;
 - generating the first version of React components and Prisma schema;
 - creating validation, filter, session, password, and change-summary tests;
-- adding Playwright responsive smoke coverage for the main frontend flows;
+- adding Playwright responsive smoke coverage for the main frontend flows and dashboard section navigation;
 - adding a small authentication boundary and change-history model;
 - reviewing documentation, Docker support, and trade-offs.
 

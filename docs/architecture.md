@@ -26,6 +26,7 @@ The dashboard is server-rendered. Filters are encoded as URL query parameters, p
 | Filtering | `src/lib/filters.ts` | Normalize query params and build Prisma filters. |
 | Pagination | `src/lib/pagination.ts`, `src/components/pagination-controls.tsx` | Parse page state, calculate ranges, and render navigation while preserving filters. |
 | Feedback | `src/lib/notifications.ts`, `src/components/toast.tsx` | Convert action results into visible confirmation or error toasts. |
+| Section navigation | `src/components/section-navigation.tsx` | Provide stable in-page navigation for dashboard areas without adding unnecessary routes. |
 | Persistence | `prisma/schema.prisma`, `src/lib/db.ts` | Define SQLite schema, Prisma models, indexes, and client access. |
 | Activity history | `src/lib/activity-change.ts`, `src/components/change-history.tsx` | Summarize create/update/delete events and render recent changes. |
 | Verification | `src/lib/*.test.ts`, `tests/e2e/responsive.spec.ts` | Cover logic that is easy to regress and browser-level responsive behavior. |
@@ -105,7 +106,7 @@ Automated tests focus on logic that can silently break:
 - password hashing;
 - session signing and tamper rejection;
 - activity update summary generation.
-- responsive browser behavior for login, dashboard sections, inline editing, pagination, toasts, and horizontal overflow.
+- responsive browser behavior for login, dashboard section navigation, inline editing, pagination, toasts, and horizontal overflow.
 
 Manual verification should still cover full business flows that intentionally mutate data: create, edit, delete, filter, and recent changes.
 

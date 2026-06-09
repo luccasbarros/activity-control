@@ -99,6 +99,17 @@ The interface must show user feedback after create, update, delete, and validati
 
 Destructive delete actions must require explicit confirmation before submission.
 
+### FR12. Dashboard Section Navigation
+
+The dashboard must provide direct navigation to the main sections:
+
+- Overview
+- Recent changes
+- Create activity
+- Activity list
+
+The navigation must remain usable on narrow mobile screens without horizontal page overflow.
+
 ## 4. Non-Functional Requirements
 
 - The app runs locally from source with:
@@ -208,6 +219,7 @@ ASCII labels are used in source code and database values for portability. User-f
 - A user can move between paginated activity pages without losing filters.
 - A user receives confirmation feedback after successful create, update, and delete actions.
 - A user must explicitly confirm delete before the destructive action is submitted.
+- A user can navigate directly to each major dashboard section.
 - Login, dashboard, inline editing, pagination, and toast feedback remain usable on desktop, tablet, and mobile widths.
 - Invalid form submissions are rejected with actionable messages.
 - Prisma schema and migration are committed.
@@ -317,6 +329,7 @@ The repository should include a concise architecture document explaining:
 | CRUD | `src/app/actions.ts` |
 | UI flows | `src/app/page.tsx`, `src/components/*` |
 | Feedback | `src/lib/notifications.ts`, `src/components/toast.tsx` |
+| Section navigation | `src/components/section-navigation.tsx`, section anchors in `src/app/page.tsx` |
 | Responsive browser checks | `playwright.config.ts`, `tests/e2e/responsive.spec.ts` |
 | Metrics | `src/lib/metrics.ts`, dashboard cards |
 | Authentication | `src/lib/password.ts`, `src/lib/session.ts`, `src/lib/auth.ts`, `src/app/login/*` |

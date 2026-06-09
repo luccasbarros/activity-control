@@ -6,7 +6,7 @@
 
 **Architecture:** Keep the app local-first. Add a simple auth boundary with a seeded user and signed cookie, record lightweight activity changes from Server Actions, provide optional Docker execution, and document the architecture/trade-offs.
 
-**Tech Stack:** Next.js App Router, React, TypeScript, Prisma, SQLite, Tailwind CSS, Vitest, Docker.
+**Tech Stack:** Next.js App Router, React, TypeScript, Prisma, SQLite, Tailwind CSS, Vitest, Playwright, Docker.
 
 ---
 
@@ -88,3 +88,22 @@
 - [x] Mark this plan complete.
 - [x] Run `npm test`, `npm run lint`, `npm run build`, and Prisma migration checks.
 - [x] Commit as `docs: document architecture and verification`.
+
+### Task 6: Section Navigation And Responsive E2E
+
+**Files:**
+- Create: `src/components/section-navigation.tsx`
+- Modify: `src/app/page.tsx`
+- Modify: `src/components/metric-cards.tsx`
+- Modify: `src/components/change-history.tsx`
+- Modify: `src/app/globals.css`
+- Modify: `tests/e2e/responsive.spec.ts`
+- Modify: `README.md`
+- Modify: `docs/sdd-spec.md`
+- Modify: `docs/architecture.md`
+- Modify: `docs/ai-skill-usage.md`
+
+- [x] Add stable section anchors for Overview, Recent changes, Create activity, and Activity list.
+- [x] Add a responsive dashboard section menu.
+- [x] Validate the menu in mobile Playwright coverage.
+- [x] Confirm screenshots do not show horizontal overflow.

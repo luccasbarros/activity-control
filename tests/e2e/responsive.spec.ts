@@ -74,6 +74,14 @@ test.describe("responsive activity control experience", () => {
       await signIn(page);
 
       await expect(page.getByText("Signed in")).toBeVisible();
+      const sectionNav = page.getByRole("navigation", {
+        name: "Dashboard sections",
+      });
+      await expect(sectionNav).toBeVisible();
+      await expect(
+        sectionNav.getByRole("link", { name: "Overview" }),
+      ).toHaveAttribute("href", "#overview");
+      await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Recent changes" })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Create activity" })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Activity list" })).toBeVisible();
@@ -101,6 +109,25 @@ test.describe("responsive activity control experience", () => {
     await page.goto("/?notice=activity-created");
     await expect(page.getByRole("status")).toContainText("Activity created");
     await expect(page.getByRole("button", { name: "Dismiss notification" })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test("section navigation works on mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await signIn(page);
+
+    const sectionNav = page.getByRole("navigation", {
+      name: "Dashboard sections",
+    });
+
+    await sectionNav.getByRole("link", { name: "Activity list" }).click();
+    await expect(page).toHaveURL(/#activity-list$/);
+    await expect(page.getByRole("heading", { name: "Activity list" })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+
+    await sectionNav.getByRole("link", { name: "Create activity" }).click();
+    await expect(page).toHaveURL(/#create-activity$/);
+    await expect(page.getByRole("heading", { name: "Create activity" })).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
 });

@@ -35,6 +35,43 @@ a {
   text-decoration: none;
 }
 
+.section-nav {
+  position: sticky;
+  top: 12px;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 8px;
+  border: 1px solid #d9deea;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 8px;
+  box-shadow: 0 12px 30px rgba(23, 32, 51, 0.08);
+}
+
+.section-nav-link {
+  display: inline-flex;
+  min-height: 38px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #44506a;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.section-nav-link:hover,
+.section-nav-link:focus-visible {
+  background: #eef2f8;
+  color: #172033;
+  outline: none;
+}
+
 .panel,
 .activity-card,
 .metric-card,
