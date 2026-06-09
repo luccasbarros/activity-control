@@ -1,0 +1,8 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      AUTH_SECRET: "local-docker-demo-secret-change-me"
+      AUTH_COOKIE_SECURE: "false"

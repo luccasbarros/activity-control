@@ -68,10 +68,10 @@
 - Modify: `package.json`
 - Modify: `README.md`
 
-- [ ] Add a production start script.
-- [ ] Add optional Docker build/run files.
+- [x] Add a production start script.
+- [x] Add optional Docker build/run files.
 - [ ] Document Docker as optional, not the primary evaluator path.
-- [ ] Commit as `chore: add optional docker runtime`.
+- [x] Commit as `chore: add optional docker runtime`.
 
 ### Task 5: Architecture And Verification Docs
 

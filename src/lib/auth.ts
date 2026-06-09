@@ -15,6 +15,14 @@ export type CurrentUser = {
 
 const cookieMaxAge = 60 * 60 * 8;
 
+function shouldUseSecureCookie() {
+  if (process.env.AUTH_COOKIE_SECURE) {
+    return process.env.AUTH_COOKIE_SECURE === "true";
+  }
+
+  return process.env.NODE_ENV === "production";
+}
+
 export async function getCurrentUser(): Promise<CurrentUser | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
@@ -55,7 +63,7 @@ export async function setSessionCookie(user: CurrentUser) {
   cookieStore.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: shouldUseSecureCookie(),
     maxAge: cookieMaxAge,
     path: "/",
   });
