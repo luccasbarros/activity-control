@@ -1,7 +1,10 @@
 import { createActivityAction } from "@/app/actions";
 import { ActivityForm } from "@/components/activity-form";
 import { ActivityTable } from "@/components/activity-table";
+import { AppHeader } from "@/components/app-header";
+import { ChangeHistory } from "@/components/change-history";
 import { FilterBar } from "@/components/filter-bar";
+import { requireCurrentUser } from "@/lib/auth";
 import { MetricCards } from "@/components/metric-cards";
 import { buildActivityWhereInput, parseActivityFilters } from "@/lib/filters";
 import { calculateActivityMetrics } from "@/lib/metrics";
@@ -27,17 +30,22 @@ function getSearchMessage(
 }
 
 export default async function Home({ searchParams }: PageProps) {
+  const currentUser = await requireCurrentUser();
   const params = (await searchParams) ?? {};
   const filters = parseActivityFilters(params);
   const where = buildActivityWhereInput(filters);
 
-  const [activities, allActivities] = await Promise.all([
+  const [activities, allActivities, recentChanges] = await Promise.all([
     prisma.activity.findMany({
       where,
       orderBy: [{ updatedAt: "desc" }],
     }),
     prisma.activity.findMany({
       select: { status: true },
+    }),
+    prisma.activityChange.findMany({
+      orderBy: [{ createdAt: "desc" }],
+      take: 8,
     }),
   ]);
 
@@ -46,22 +54,11 @@ export default async function Home({ searchParams }: PageProps) {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-7xl flex-col gap-8 px-5 py-8 lg:px-8">
-      <header>
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate">
-            Activity Control
-          </p>
-          <h1 className="mt-3 text-4xl font-semibold text-ink">
-            Internal activity control
-          </h1>
-          <p className="mt-3 max-w-2xl text-base leading-7 text-slate">
-            A local operations board for registering, filtering, and tracking
-            internal team activities with Prisma and SQLite.
-          </p>
-        </div>
-      </header>
+      <AppHeader user={currentUser} />
 
       <MetricCards metrics={metrics} />
+
+      <ChangeHistory changes={recentChanges} />
 
       {error ? <p className="alert">{error}</p> : null}
 

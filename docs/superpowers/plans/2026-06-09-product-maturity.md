@@ -18,7 +18,7 @@
 
 - [x] Add product-maturity enhancements to the SDD spec.
 - [x] Create this implementation plan.
-- [ ] Commit as `docs: specify product maturity enhancements`.
+- [x] Commit as `docs: specify product maturity enhancements`.
 
 ### Task 2: Local Authentication
 
@@ -34,13 +34,13 @@
 - Create: `src/app/login/actions.ts`
 - Modify: `src/app/page.tsx`
 
-- [ ] Write password hashing and session token tests first.
-- [ ] Add `User` and `UserRole` to Prisma.
-- [ ] Generate a migration.
-- [ ] Seed a demo user.
-- [ ] Implement login/logout and protect the dashboard.
-- [ ] Verify expected commands still work.
-- [ ] Commit as `feat: add local authentication gate`.
+- [x] Write password hashing and session token tests first.
+- [x] Add `User` and `UserRole` to Prisma.
+- [x] Generate a migration.
+- [x] Seed a demo user.
+- [x] Implement login/logout and protect the dashboard.
+- [x] Verify expected commands still work.
+- [x] Commit as `feat: add local auth and activity history`.
 
 ### Task 3: Activity Change History
 
@@ -52,12 +52,12 @@
 - Create: `src/components/change-history.tsx`
 - Modify: `src/app/page.tsx`
 
-- [ ] Write change-summary tests first.
-- [ ] Add `ActivityChange` and `ActivityChangeType` to Prisma.
-- [ ] Generate a migration.
-- [ ] Record create, update, and delete events from Server Actions.
-- [ ] Render recent changes on the dashboard.
-- [ ] Commit as `feat: record activity change history`.
+- [x] Write change-summary tests first.
+- [x] Add `ActivityChange` and `ActivityChangeType` to Prisma.
+- [x] Generate a migration.
+- [x] Record create, update, and delete events from Server Actions.
+- [x] Render recent changes on the dashboard.
+- [x] Commit as `feat: add local auth and activity history`.
 
 ### Task 4: Docker Support
 

@@ -29,6 +29,31 @@ enum ActivityStatus {
   BLOCKED
 }
 
+enum UserRole {
+  ADMIN
+  MEMBER
+}
+
+enum ActivityChangeType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+model User {
+  id           String           @id @default(cuid())
+  email        String           @unique
+  name         String
+  passwordHash String
+  passwordSalt String
+  role         UserRole         @default(MEMBER)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  changes      ActivityChange[]
+
+  @@index([email])
+}
+
 model Activity {
   id          String         @id @default(cuid())
   title       String
@@ -40,6 +65,7 @@ model Activity {
   status      ActivityStatus @default(PENDING)
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
+  changes     ActivityChange[]
 
   @@index([priority])
   @@index([category])
@@ -47,4 +73,21 @@ model Activity {
   @@index([assignee])
   @@index([status])
   @@index([updatedAt])
+}
+
+model ActivityChange {
+  id            String             @id @default(cuid())
+  activityId    String?
+  activityTitle String
+  type          ActivityChangeType
+  summary       String
+  actorId       String?
+  actorName     String
+  createdAt     DateTime           @default(now())
+  activity      Activity?          @relation(fields: [activityId], references: [id], onDelete: SetNull)
+  actor         User?              @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([activityId])
+  @@index([actorId])
+  @@index([createdAt])
 }

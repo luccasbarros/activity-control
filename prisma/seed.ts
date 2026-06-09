@@ -1,11 +1,20 @@
 import {
+  ActivityChangeType,
   ActivityStatus,
   Category,
   PrismaClient,
   Priority,
+  UserRole,
 } from "@prisma/client";
+import { hashPassword } from "../src/lib/password";
 
 const prisma = new PrismaClient();
+
+const demoUser = {
+  email: "admin@example.com",
+  name: "Demo Admin",
+  password: "ActivityControl123!",
+};
 
 const activities = [
   {
@@ -71,8 +80,60 @@ const activities = [
 ];
 
 async function main() {
-  await prisma.activity.deleteMany();
-  await prisma.activity.createMany({ data: activities });
+  const password = hashPassword(demoUser.password);
+  const user = await prisma.user.upsert({
+    where: { email: demoUser.email },
+    update: {
+      name: demoUser.name,
+      role: UserRole.ADMIN,
+    },
+    create: {
+      email: demoUser.email,
+      name: demoUser.name,
+      role: UserRole.ADMIN,
+      passwordHash: password.passwordHash,
+      passwordSalt: password.passwordSalt,
+    },
+  });
+
+  const activityCount = await prisma.activity.count();
+
+  if (activityCount > 0) {
+    const changeCount = await prisma.activityChange.count();
+
+    if (changeCount === 0) {
+      const existingActivities = await prisma.activity.findMany();
+
+      for (const activity of existingActivities) {
+        await prisma.activityChange.create({
+          data: {
+            activityId: activity.id,
+            activityTitle: activity.title,
+            type: ActivityChangeType.CREATED,
+            summary: "Backfilled seed activity history.",
+            actorId: user.id,
+            actorName: user.name,
+          },
+        });
+      }
+    }
+
+    return;
+  }
+
+  for (const activity of activities) {
+    const createdActivity = await prisma.activity.create({ data: activity });
+    await prisma.activityChange.create({
+      data: {
+        activityId: createdActivity.id,
+        activityTitle: createdActivity.title,
+        type: ActivityChangeType.CREATED,
+        summary: "Seeded demo activity.",
+        actorId: user.id,
+        actorName: user.name,
+      },
+    });
+  }
 }
 
 main()
