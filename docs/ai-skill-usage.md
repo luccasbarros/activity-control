@@ -9,7 +9,7 @@ Supporting skills were used for focused activities:
 - `superpowers:test-driven-development` for validation/filter tests.
 - `superpowers:verification-before-completion` for final evidence before completion claims.
 
-The skill workflow helped transform the challenge prompt into a committed specification, implementation plan, Prisma model, validation tests, CRUD UI, and documentation.
+The skill workflow helped transform the challenge prompt into a committed specification, implementation plan, Prisma model, validation tests, CRUD UI, local auth boundary, activity history, Docker support, and documentation.
 
 ## Skill-Guided Activities
 
@@ -20,8 +20,11 @@ The skill workflow helped transform the challenge prompt into a committed specif
 | Data model drafting | Prisma/schema assistance | `prisma/schema.prisma` |
 | Validation design | `superpowers:test-driven-development` | `src/lib/validation.ts`, `src/lib/validation.test.ts` |
 | Filter design | `superpowers:test-driven-development` | `src/lib/filters.ts`, `src/lib/filters.test.ts` |
+| Auth helper design | `superpowers:test-driven-development` | `src/lib/password.ts`, `src/lib/session.ts`, related tests |
+| Activity history design | `superpowers:test-driven-development` | `src/lib/activity-change.ts`, `src/components/change-history.tsx` |
 | UI generation | React/Next.js component assistance | `src/components/*`, `src/app/page.tsx` |
-| Documentation | documentation assistance | `README.md`, `docs/ai-skill-usage.md` |
+| Docker runtime | implementation planning assistance | `Dockerfile`, `.dockerignore`, `docker-compose.yml` |
+| Documentation | documentation assistance | `README.md`, `docs/architecture.md`, `docs/ai-skill-usage.md` |
 | Verification discipline | `superpowers:verification-before-completion` | repeated `npm test`, `npm run lint`, `npm run build`, Prisma commands |
 
 ## Human Review Boundaries
@@ -35,14 +38,18 @@ Human-owned decisions:
 - Use Server Actions instead of API Routes.
 - Use Tailwind CSS instead of ShadCN.
 - Include dashboard metrics and seed data as pragmatic differentiators.
-- Skip authentication, Docker, and full audit history.
+- Add local authentication as a small access boundary instead of a full identity platform.
+- Add lightweight activity history instead of a full event-sourcing or audit-log system.
+- Add Docker as an optional runtime while keeping source execution as the primary path.
 - Keep commits small and descriptive.
 
 ## Evidence In The Repository
 
 - `docs/sdd-spec.md` was committed before scaffold implementation.
 - `docs/superpowers/plans/2026-06-09-activity-control.md` maps specification items to files and tasks.
+- `docs/superpowers/plans/2026-06-09-product-maturity.md` records the later product-maturity enhancements and completion checks.
 - Tests were written for validation and filters before the helper implementation.
+- Additional tests cover password hashing, session token verification, and activity change summaries.
 - `docs/agent-submission.md` records continuation state so project memory does not depend only on chat context.
 - Commit history shows the progression from specification to implementation.
 - The implementation plan now marks completed tasks with checked boxes, making the spec-to-code progression easier to audit.

@@ -70,7 +70,7 @@
 
 - [x] Add a production start script.
 - [x] Add optional Docker build/run files.
-- [ ] Document Docker as optional, not the primary evaluator path.
+- [x] Document Docker as optional, not the primary evaluator path.
 - [x] Commit as `chore: add optional docker runtime`.
 
 ### Task 5: Architecture And Verification Docs
@@ -82,9 +82,9 @@
 - Modify: `docs/agent-submission.md`
 - Modify: `docs/superpowers/plans/2026-06-09-product-maturity.md`
 
-- [ ] Add concise architecture documentation.
-- [ ] Update README with auth, history, Docker, references, and verification.
-- [ ] Update skill evidence to include architecture/documentation assistance.
-- [ ] Mark this plan complete.
-- [ ] Run `npm test`, `npm run lint`, `npm run build`, and Prisma migration checks.
-- [ ] Commit as `docs: document architecture and verification`.
+- [x] Add concise architecture documentation.
+- [x] Update README with auth, history, Docker, references, and verification.
+- [x] Update skill evidence to include architecture/documentation assistance.
+- [x] Mark this plan complete.
+- [x] Run `npm test`, `npm run lint`, `npm run build`, and Prisma migration checks.
+- [x] Commit as `docs: document architecture and verification`.
