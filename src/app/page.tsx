@@ -6,10 +6,10 @@ export default function Home() {
           SDD Activity Control
         </p>
         <h1 className="mt-3 text-4xl font-semibold text-ink">
-          Controle de atividades internas
+          Internal activity control
         </h1>
         <p className="mt-3 max-w-2xl text-base leading-7 text-slate">
-          Scaffold inicial. A implementacao abaixo sera guiada por docs/sdd-spec.md.
+          Initial scaffold. The implementation below is guided by docs/sdd-spec.md.
         </p>
       </section>
     </main>

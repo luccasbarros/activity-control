@@ -6,6 +6,8 @@ This project is a local web application for managing internal team activities. I
 
 The system must let a user create, list, edit, delete, filter, and track activities by priority, category, team, owner, status, creation date, and update date.
 
+All deliverable-facing language must be English: UI copy, README, evidence notes, technical notes, and code comments. The original challenge wording is in Portuguese, so this specification keeps a mapping from the original Portuguese domain terms to English user-facing labels.
+
 ## 2. Product Goals
 
 - Provide a simple operational interface for internal activity tracking.
@@ -56,10 +58,10 @@ Filters can be combined.
 
 The user can set the status to one of:
 
-- Pendente
-- Em andamento
-- Concluida
-- Bloqueada
+- Pending
+- In progress
+- Done
+- Blocked
 
 ### FR7. Show Dates
 
@@ -117,21 +119,37 @@ The first screen should include lightweight metrics:
 
 | Internal | Display |
 | --- | --- |
-| `LOW` | Baixa |
-| `MEDIUM` | Media |
-| `HIGH` | Alta |
-| `CRITICAL` | Critica |
+| `LOW` | Low |
+| `MEDIUM` | Medium |
+| `HIGH` | High |
+| `CRITICAL` | Critical |
 | `BUG` | Bug |
 | `FEATURE` | Feature |
-| `IMPROVEMENT` | Melhoria |
-| `SUPPORT` | Suporte |
-| `OPERATIONAL` | Operacional |
-| `PENDING` | Pendente |
-| `IN_PROGRESS` | Em andamento |
-| `DONE` | Concluida |
-| `BLOCKED` | Bloqueada |
+| `IMPROVEMENT` | Improvement |
+| `SUPPORT` | Support |
+| `OPERATIONAL` | Operational |
+| `PENDING` | Pending |
+| `IN_PROGRESS` | In progress |
+| `DONE` | Done |
+| `BLOCKED` | Blocked |
 
-ASCII labels are used in source code and database values for portability. The UI can still be explained in Portuguese.
+ASCII labels are used in source code and database values for portability. User-facing labels are in English.
+
+### Original Requirement Mapping
+
+| Portuguese Requirement | English Implementation |
+| --- | --- |
+| `Baixa` | `Low` |
+| `Media` | `Medium` |
+| `Alta` | `High` |
+| `Critica` | `Critical` |
+| `Melhoria` | `Improvement` |
+| `Suporte` | `Support` |
+| `Operacional` | `Operational` |
+| `Pendente` | `Pending` |
+| `Em andamento` | `In progress` |
+| `Concluida` | `Done` |
+| `Bloqueada` | `Blocked` |
 
 ## 6. Interface Flows
 
