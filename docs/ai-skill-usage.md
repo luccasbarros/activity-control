@@ -9,8 +9,9 @@ Supporting skills were used for focused activities:
 - `superpowers:test-driven-development` for validation/filter tests.
 - `build-web-apps:frontend-testing-debugging` for responsive browser validation.
 - `superpowers:verification-before-completion` for final evidence before completion claims.
+- `activity-control-security-review` for a project-specific security review workflow.
 
-The skill workflow helped transform the challenge prompt into a committed specification, implementation plan, Prisma model, validation tests, CRUD UI, local auth boundary, activity history, route-based app shell, dashboard charts, responsive browser checks, Docker support, CI, local observability, and documentation.
+The skill workflow helped transform the challenge prompt into a committed specification, implementation plan, Prisma model, validation tests, CRUD UI, local auth boundary, activity history, route-based app shell, dashboard charts, responsive browser checks, Docker support, CI, local observability, security review structure, and documentation.
 
 ## Skill-Guided Activities
 
@@ -29,6 +30,7 @@ The skill workflow helped transform the challenge prompt into a committed specif
 | Docker runtime | implementation planning assistance | `Dockerfile`, `.dockerignore`, `docker-compose.yml` |
 | CI and versioning | implementation planning assistance | `.github/workflows/ci.yml`, `package.json` version scripts |
 | Local observability | implementation planning assistance | `src/lib/logger.ts`, structured log event constants |
+| Security review workflow | `activity-control-security-review` | `docs/skills/activity-control-security-review/*` |
 | Documentation | documentation assistance | `README.md`, `docs/architecture.md`, `docs/ai-skill-usage.md`, `docs/design/*` |
 | Verification discipline | `superpowers:verification-before-completion` | repeated `npm test`, `npm run lint`, `npm run build`, Prisma commands, Playwright checks |
 
@@ -50,6 +52,7 @@ Review-owned decisions:
 - Use CSS dashboard charts instead of adding a charting dependency.
 - Use structured local logs instead of adding an external monitoring service.
 - Add browser-level responsive checks because this is a frontend evaluation, while keeping them focused on high-value flows.
+- Keep a project-specific security review skill in the repository as public evidence, while keeping non-public continuation material outside the repository.
 - Keep commits small and descriptive.
 
 ## Evidence In The Repository
@@ -61,6 +64,7 @@ Review-owned decisions:
 - Additional tests cover password hashing, session token verification, pagination, navigation helpers, notifications, and activity change summaries.
 - Playwright e2e coverage checks login, route navigation, edit modal, pagination, toast feedback, and horizontal overflow across desktop, tablet, and mobile widths.
 - `docs/design/reference.md`, `docs/design/ui-decisions.md`, and `docs/design/responsive-checklist.md` record the UI direction and responsive acceptance checks.
+- `docs/skills/activity-control-security-review/` records the security review workflow and checklist used for the project.
 - `.github/workflows/ci.yml` records the repeatable repository verification flow.
 - Commit history shows the progression from specification to implementation.
 - The implementation plan now marks completed tasks with checked boxes, making the spec-to-code progression easier to audit.

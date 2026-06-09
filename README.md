@@ -158,6 +158,8 @@ AI assistance was used through a skill-guided workflow. The primary documented s
 
 Supporting skill-guided activities included `superpowers:test-driven-development` for validation/filter tests, `build-web-apps:frontend-testing-debugging` for responsive browser validation, and `superpowers:verification-before-completion` for final checks.
 
+A sanitized project-specific security review skill is included at `docs/skills/activity-control-security-review/`. It documents the repeatable review workflow used for auth, sessions, Server Actions, validation, logging, Docker, CI, dependency audit, and public-repository hygiene.
+
 The skill-assisted workflow supported:
 
 - converting the challenge prompt into a Markdown specification;
@@ -167,6 +169,7 @@ The skill-assisted workflow supported:
 - adding Playwright responsive smoke coverage for the main frontend routes and edit modal;
 - adding a small authentication boundary and change-history model;
 - reviewing documentation, Docker support, CI, local observability, and trade-offs.
+- documenting a repeatable security review checklist for the project.
 
 Planning assistance constrained scope, reviewed the generated code, kept the UI in English, chose local-first SQLite setup, and ran verification commands. See `docs/ai-skill-usage.md` for evidence.
 
