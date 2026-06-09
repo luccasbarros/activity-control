@@ -88,7 +88,8 @@ a {
 .primary-button,
 .secondary-button,
 .ghost-button,
-.danger-button {
+.danger-button,
+.disabled-button {
   display: inline-flex;
   min-height: 40px;
   align-items: center;
@@ -125,6 +126,13 @@ a {
   border-color: #f2b6b6;
   background: #fff5f5;
   color: #b42318;
+}
+
+.disabled-button {
+  border-color: #d9deea;
+  background: #eef2f8;
+  color: #8a94a7;
+  cursor: not-allowed;
 }
 
 .primary-button:hover,
@@ -184,4 +192,45 @@ a {
   color: #b42318;
   font-size: 14px;
   font-weight: 700;
+}
+
+.toast {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 50;
+  display: flex;
+  max-width: min(420px, calc(100vw - 40px));
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #c9d0df;
+  border-radius: 8px;
+  background: #fff;
+  padding: 14px 16px;
+  box-shadow: 0 18px 44px rgba(23, 32, 51, 0.16);
+  color: #172033;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.toast-success {
+  border-color: #9fd9b6;
+  background: #f1fbf5;
+  color: #16703c;
+}
+
+.toast-error {
+  border-color: #f2b6b6;
+  background: #fff5f5;
+  color: #b42318;
+}
+
+.toast-close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
 }

@@ -4,10 +4,15 @@ import { ActivityTable } from "@/components/activity-table";
 import { AppHeader } from "@/components/app-header";
 import { ChangeHistory } from "@/components/change-history";
 import { FilterBar } from "@/components/filter-bar";
+import { PaginationControls } from "@/components/pagination-controls";
+import { Toast } from "@/components/toast";
 import { requireCurrentUser } from "@/lib/auth";
 import { MetricCards } from "@/components/metric-cards";
 import { buildActivityWhereInput, parseActivityFilters } from "@/lib/filters";
 import { calculateActivityMetrics } from "@/lib/metrics";
+import { buildActivityListPath } from "@/lib/navigation";
+import { getNotification } from "@/lib/notifications";
+import { getPaginationState, parsePaginationParams } from "@/lib/pagination";
 import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -33,13 +38,11 @@ export default async function Home({ searchParams }: PageProps) {
   const currentUser = await requireCurrentUser();
   const params = (await searchParams) ?? {};
   const filters = parseActivityFilters(params);
+  const paginationParams = parsePaginationParams(params);
   const where = buildActivityWhereInput(filters);
 
-  const [activities, allActivities, recentChanges] = await Promise.all([
-    prisma.activity.findMany({
-      where,
-      orderBy: [{ updatedAt: "desc" }],
-    }),
+  const [totalActivities, allActivities, recentChanges] = await Promise.all([
+    prisma.activity.count({ where }),
     prisma.activity.findMany({
       select: { status: true },
     }),
@@ -49,18 +52,34 @@ export default async function Home({ searchParams }: PageProps) {
     }),
   ]);
 
+  const pagination = getPaginationState({
+    totalItems: totalActivities,
+    requestedPage: paginationParams.page,
+    pageSize: paginationParams.pageSize,
+  });
+
+  const activities = await prisma.activity.findMany({
+    where,
+    orderBy: [{ updatedAt: "desc" }],
+    skip: pagination.skip,
+    take: pagination.take,
+  });
+
   const metrics = calculateActivityMetrics(allActivities);
   const error = getSearchMessage(params, "error");
+  const notice = getSearchMessage(params, "notice");
+  const notification = getNotification({ error, notice });
+  const returnTo = buildActivityListPath(params);
 
   return (
     <main className="mx-auto flex min-h-screen max-w-7xl flex-col gap-8 px-5 py-8 lg:px-8">
+      <Toast notification={notification} />
+
       <AppHeader user={currentUser} />
 
       <MetricCards metrics={metrics} />
 
       <ChangeHistory changes={recentChanges} />
-
-      {error ? <p className="alert">{error}</p> : null}
 
       <section className="panel">
         <div className="mb-5">
@@ -70,7 +89,11 @@ export default async function Home({ searchParams }: PageProps) {
             server before the activity is persisted.
           </p>
         </div>
-        <ActivityForm action={createActivityAction} submitLabel="Create activity" />
+        <ActivityForm
+          action={createActivityAction}
+          returnTo={returnTo}
+          submitLabel="Create activity"
+        />
       </section>
 
       <section className="grid gap-4">
@@ -81,8 +104,9 @@ export default async function Home({ searchParams }: PageProps) {
             after refresh.
           </p>
         </div>
-        <FilterBar filters={filters} />
-        <ActivityTable activities={activities} />
+        <FilterBar filters={filters} pageSize={pagination.pageSize} />
+        <ActivityTable activities={activities} returnTo={returnTo} />
+        <PaginationControls filters={filters} pagination={pagination} />
       </section>
     </main>
   );

@@ -20,10 +20,12 @@ The dashboard is server-rendered. Filters are encoded as URL query parameters, p
 
 | Boundary | Files | Responsibility |
 | --- | --- | --- |
-| UI composition | `src/app/page.tsx`, `src/components/*` | Render metrics, filters, forms, activities, and recent changes. |
+| UI composition | `src/app/page.tsx`, `src/components/*` | Render metrics, filters, pagination, forms, activities, feedback, and recent changes. |
 | Authentication | `src/app/login/*`, `src/lib/auth.ts`, `src/lib/session.ts`, `src/lib/password.ts` | Seeded login, signed HTTP-only cookie, current-user lookup, logout. |
 | Validation | `src/lib/validation.ts` | Validate required fields, lengths, and enum values before persistence. |
 | Filtering | `src/lib/filters.ts` | Normalize query params and build Prisma filters. |
+| Pagination | `src/lib/pagination.ts`, `src/components/pagination-controls.tsx` | Parse page state, calculate ranges, and render navigation while preserving filters. |
+| Feedback | `src/lib/notifications.ts`, `src/components/toast.tsx` | Convert action results into visible confirmation or error toasts. |
 | Persistence | `prisma/schema.prisma`, `src/lib/db.ts` | Define SQLite schema, Prisma models, indexes, and client access. |
 | Activity history | `src/lib/activity-change.ts`, `src/components/change-history.tsx` | Summarize create/update/delete events and render recent changes. |
 | Verification | `src/lib/*.test.ts` | Cover logic that is easy to regress as the product evolves. |
@@ -97,6 +99,9 @@ Automated tests focus on logic that can silently break:
 
 - validation rules;
 - filter normalization;
+- pagination range calculation;
+- safe return-path and query-message generation;
+- toast message mapping;
 - password hashing;
 - session signing and tamper rejection;
 - activity update summary generation.
@@ -108,6 +113,6 @@ Manual verification should cover the browser flow: login, create, edit, delete, 
 - Replace local auth with OAuth or SSO.
 - Add role-based permissions for admin/member workflows.
 - Add Playwright tests for browser-level CRUD and auth flows.
-- Add pagination/search for larger activity volume.
+- Add full-text search for larger activity volume.
 - Move to PostgreSQL if multi-user concurrency becomes important.
 - Add field-level audit diffs if compliance requirements appear.

@@ -19,7 +19,8 @@ The skill workflow helped transform the challenge prompt into a committed specif
 | Implementation breakdown | `superpowers:writing-plans` | `docs/superpowers/plans/2026-06-09-activity-control.md` |
 | Data model drafting | Prisma/schema assistance | `prisma/schema.prisma` |
 | Validation design | `superpowers:test-driven-development` | `src/lib/validation.ts`, `src/lib/validation.test.ts` |
-| Filter design | `superpowers:test-driven-development` | `src/lib/filters.ts`, `src/lib/filters.test.ts` |
+| Filter and pagination design | `superpowers:test-driven-development` | `src/lib/filters.ts`, `src/lib/pagination.ts`, related tests |
+| Feedback design | `superpowers:test-driven-development` | `src/lib/notifications.ts`, `src/components/toast.tsx` |
 | Auth helper design | `superpowers:test-driven-development` | `src/lib/password.ts`, `src/lib/session.ts`, related tests |
 | Activity history design | `superpowers:test-driven-development` | `src/lib/activity-change.ts`, `src/components/change-history.tsx` |
 | UI generation | React/Next.js component assistance | `src/components/*`, `src/app/page.tsx` |
@@ -49,7 +50,7 @@ Human-owned decisions:
 - `docs/superpowers/plans/2026-06-09-activity-control.md` maps specification items to files and tasks.
 - `docs/superpowers/plans/2026-06-09-product-maturity.md` records the later product-maturity enhancements and completion checks.
 - Tests were written for validation and filters before the helper implementation.
-- Additional tests cover password hashing, session token verification, and activity change summaries.
+- Additional tests cover password hashing, session token verification, pagination, navigation helpers, notifications, and activity change summaries.
 - `docs/agent-submission.md` records continuation state so project memory does not depend only on chat context.
 - Commit history shows the progression from specification to implementation.
 - The implementation plan now marks completed tasks with checked boxes, making the spec-to-code progression easier to audit.

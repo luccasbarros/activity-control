@@ -84,6 +84,21 @@ The first screen should include lightweight metrics:
 - blocked activities
 - completed activities
 
+### FR10. Paginated Activity List
+
+The activity list must support server-side pagination through URL query params:
+
+- `page`
+- `pageSize`
+
+Pagination must preserve active filters and avoid loading all matching activity records into the page view.
+
+### FR11. Action Feedback And Confirmation
+
+The interface must show user feedback after create, update, delete, and validation outcomes.
+
+Destructive delete actions must require explicit confirmation before submission.
+
 ## 4. Non-Functional Requirements
 
 - The app runs locally from source with:
@@ -190,6 +205,9 @@ ASCII labels are used in source code and database values for portability. User-f
 - A user can edit an existing activity and see `updatedAt` change.
 - A user can delete an activity and see metrics update.
 - A user can filter by priority, category, team, and assignee.
+- A user can move between paginated activity pages without losing filters.
+- A user receives confirmation feedback after successful create, update, and delete actions.
+- A user must explicitly confirm delete before the destructive action is submitted.
 - Invalid form submissions are rejected with actionable messages.
 - Prisma schema and migration are committed.
 - README documents setup, architecture, AI/Skill usage, and validation.
@@ -294,8 +312,10 @@ The repository should include a concise architecture document explaining:
 | Seed data | `prisma/seed.ts` |
 | Validation | `src/lib/validation.ts` |
 | Filtering | `src/lib/filters.ts`, URL query params |
+| Pagination | `src/lib/pagination.ts`, `src/components/pagination-controls.tsx` |
 | CRUD | `src/app/actions.ts` |
 | UI flows | `src/app/page.tsx`, `src/components/*` |
+| Feedback | `src/lib/notifications.ts`, `src/components/toast.tsx` |
 | Metrics | `src/lib/metrics.ts`, dashboard cards |
 | Authentication | `src/lib/password.ts`, `src/lib/session.ts`, `src/lib/auth.ts`, `src/app/login/*` |
 | Change history | `prisma/schema.prisma`, `src/lib/activity-change.ts`, `src/components/change-history.tsx` |

@@ -10,6 +10,7 @@ type ActivityFormProps = {
   defaultValues?: Partial<Activity>;
   submitLabel: string;
   compact?: boolean;
+  returnTo?: string;
 };
 
 export function ActivityForm({
@@ -17,9 +18,12 @@ export function ActivityForm({
   defaultValues,
   submitLabel,
   compact = false,
+  returnTo,
 }: ActivityFormProps) {
   return (
     <form action={action} className={compact ? "space-y-4" : "space-y-5"}>
+      {returnTo ? <input name="returnTo" type="hidden" value={returnTo} /> : null}
+
       <div
         className={
           compact

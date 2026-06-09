@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { categoryOptions, priorityOptions } from "@/lib/options";
 import { type ActivityFilters, hasActiveFilters } from "@/lib/filters";
+import { DEFAULT_PAGE_SIZE } from "@/lib/pagination";
 
 type FilterBarProps = {
   filters: ActivityFilters;
+  pageSize: number;
 };
 
-export function FilterBar({ filters }: FilterBarProps) {
+export function FilterBar({ filters, pageSize }: FilterBarProps) {
   return (
     <form className="panel grid gap-4 lg:grid-cols-[1fr_1fr_1fr_1fr_auto]">
+      <input name="pageSize" type="hidden" value={pageSize} />
+
       <label className="grid gap-2 text-sm font-medium text-ink">
         <span>Priority</span>
         <select name="priority" defaultValue={filters.priority ?? ""} className="field">
@@ -58,7 +62,10 @@ export function FilterBar({ filters }: FilterBarProps) {
           Apply
         </button>
         {hasActiveFilters(filters) ? (
-          <Link href="/" className="ghost-button">
+          <Link
+            href={pageSize === DEFAULT_PAGE_SIZE ? "/" : `/?pageSize=${pageSize}`}
+            className="ghost-button"
+          >
             Clear
           </Link>
         ) : null}

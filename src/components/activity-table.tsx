@@ -8,12 +8,14 @@ import {
   statusOptions,
 } from "@/lib/options";
 import { ActivityForm } from "./activity-form";
+import { ConfirmSubmitButton } from "./confirm-submit-button";
 
 type ActivityTableProps = {
   activities: Activity[];
+  returnTo: string;
 };
 
-export function ActivityTable({ activities }: ActivityTableProps) {
+export function ActivityTable({ activities, returnTo }: ActivityTableProps) {
   if (activities.length === 0) {
     return (
       <section className="empty-state">
@@ -65,6 +67,7 @@ export function ActivityTable({ activities }: ActivityTableProps) {
                 <ActivityForm
                   action={updateActivityAction.bind(null, activity.id)}
                   defaultValues={activity}
+                  returnTo={returnTo}
                   submitLabel="Save changes"
                   compact
                 />
@@ -72,9 +75,13 @@ export function ActivityTable({ activities }: ActivityTableProps) {
             </details>
 
             <form action={deleteActivityAction.bind(null, activity.id)}>
-              <button type="submit" className="danger-button">
+              <input name="returnTo" type="hidden" value={returnTo} />
+              <ConfirmSubmitButton
+                className="danger-button"
+                message={`Delete "${activity.title}"? This action cannot be undone.`}
+              >
                 Delete
-              </button>
+              </ConfirmSubmitButton>
             </form>
           </div>
         </article>

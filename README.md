@@ -50,16 +50,18 @@ For local HTTP access, `docker-compose.yml` sets `AUTH_COOKIE_SECURE=false`. A r
 
 - Local sign-in with a seeded demo user
 - Create activities
-- List activities
+- List activities with server-side pagination
 - Edit activities inline
 - Delete activities
 - Filter by priority, category, team, and assignee
 - Manage status: Pending, In progress, Done, Blocked
 - Show created and updated timestamps
 - Record recent create, update, and delete changes
+- Show confirmation toasts after create, update, delete, and validation errors
+- Confirm destructive delete actions before submitting
 - Seed representative local data
 - Dashboard metrics for total, pending, in-progress, blocked, and done activities
-- Automated tests for validation, filters, password hashing, session tokens, and change summaries
+- Automated tests for validation, filters, pagination, navigation helpers, notifications, password hashing, session tokens, and change summaries
 - Optional Docker runtime
 
 ## Specification-Driven Artifacts
@@ -80,6 +82,9 @@ The app uses the Next.js App Router with server-side data loading and Server Act
 - `src/lib/db.ts`: Prisma Client singleton.
 - `src/lib/validation.ts`: shared Zod validation for create/update.
 - `src/lib/filters.ts`: URL filter parsing and Prisma where-clause generation.
+- `src/lib/pagination.ts`: page and page-size parsing with range calculation.
+- `src/lib/navigation.ts`: safe return paths and query-message helpers.
+- `src/lib/notifications.ts`: toast message mapping.
 - `src/lib/metrics.ts`: dashboard metric calculation.
 - `src/lib/password.ts`: PBKDF2 password hashing for the seeded local account.
 - `src/lib/session.ts`: signed session-token helper.
@@ -121,6 +126,8 @@ Runtime smoke check:
 
 - `/` without a session redirects to `/login`;
 - `/login` returns 200 and displays the seeded demo account.
+- authenticated list pages render pagination state;
+- confirmation toasts render from action query messages.
 
 ## AI / Skill Usage
 

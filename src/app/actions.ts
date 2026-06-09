@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { summarizeActivityUpdate } from "@/lib/activity-change";
 import { requireCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { sanitizeReturnTo, withQueryMessage } from "@/lib/navigation";
 import { type ActivityFormInput, parseActivityFormData } from "@/lib/validation";
 
 function firstValidationError(
@@ -15,8 +16,12 @@ function firstValidationError(
   return Object.values(errors).flat().find(Boolean) ?? fallback;
 }
 
-function redirectWithError(message: string): never {
-  redirect(`/?error=${encodeURIComponent(message)}`);
+function redirectWithError(returnTo: string, message: string): never {
+  redirect(withQueryMessage(returnTo, { key: "error", value: message }));
+}
+
+function redirectWithNotice(returnTo: string, notice: string): never {
+  redirect(withQueryMessage(returnTo, { key: "notice", value: notice }));
 }
 
 function toActivityFormInput(activity: Activity): ActivityFormInput {
@@ -33,10 +38,14 @@ function toActivityFormInput(activity: Activity): ActivityFormInput {
 
 export async function createActivityAction(formData: FormData) {
   const user = await requireCurrentUser();
+  const returnTo = sanitizeReturnTo(formData.get("returnTo"));
   const parsed = parseActivityFormData(formData);
 
   if (!parsed.success) {
-    redirectWithError(firstValidationError(parsed.errors, "Invalid activity."));
+    redirectWithError(
+      returnTo,
+      firstValidationError(parsed.errors, "Invalid activity."),
+    );
   }
 
   await prisma.$transaction(async (tx) => {
@@ -57,15 +66,19 @@ export async function createActivityAction(formData: FormData) {
   });
 
   revalidatePath("/");
-  redirect("/");
+  redirectWithNotice(returnTo, "activity-created");
 }
 
 export async function updateActivityAction(id: string, formData: FormData) {
   const user = await requireCurrentUser();
+  const returnTo = sanitizeReturnTo(formData.get("returnTo"));
   const parsed = parseActivityFormData(formData);
 
   if (!parsed.success) {
-    redirectWithError(firstValidationError(parsed.errors, "Invalid activity."));
+    redirectWithError(
+      returnTo,
+      firstValidationError(parsed.errors, "Invalid activity."),
+    );
   }
 
   try {
@@ -95,15 +108,16 @@ export async function updateActivityAction(id: string, formData: FormData) {
       });
     });
   } catch {
-    redirectWithError("Activity not found.");
+    redirectWithError(returnTo, "Activity not found.");
   }
 
   revalidatePath("/");
-  redirect("/");
+  redirectWithNotice(returnTo, "activity-updated");
 }
 
-export async function deleteActivityAction(id: string) {
+export async function deleteActivityAction(id: string, formData: FormData) {
   const user = await requireCurrentUser();
+  const returnTo = sanitizeReturnTo(formData.get("returnTo"));
 
   try {
     await prisma.$transaction(async (tx) => {
@@ -131,9 +145,9 @@ export async function deleteActivityAction(id: string) {
       });
     });
   } catch {
-    redirectWithError("Activity not found.");
+    redirectWithError(returnTo, "Activity not found.");
   }
 
   revalidatePath("/");
-  redirect("/");
+  redirectWithNotice(returnTo, "activity-deleted");
 }
