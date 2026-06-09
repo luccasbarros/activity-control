@@ -4,8 +4,6 @@ Local activity control system built with Next.js, React, TypeScript, Prisma, and
 
 The project was built with a Specification-Driven Development / Specification-Driven Tooling flow: the specification was written first, committed, then transformed into schema, validation, CRUD flows, filters, metrics, tests, and documentation.
 
-Product name: Activity Control. SDD/SDT is the delivery method used to design, implement, and verify the application.
-
 ## Run Locally
 
 ```bash
